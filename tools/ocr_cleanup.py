@@ -60,6 +60,11 @@ class ChangeLog:
     def flag(self, stage, line, snippet, note=""):
         self.records.append(Change(stage, "flag", line, snippet, "", note))
 
+    def protected_skip(self, stage, line, snippet, note=""):
+        """A would-be flag that matched --protect-file and was suppressed.
+        Recorded (not silently dropped) so the report stays auditable."""
+        self.records.append(Change(stage, "protected", line, snippet, "", note))
+
     def counts(self) -> Counter:
         return Counter((r.stage, r.kind) for r in self.records)
 
@@ -80,6 +85,43 @@ ODD_SPACES = "\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009
 ROMAN_OR_ARABIC = re.compile(r"^[\divxlcdmIVXLCDM]{1,7}$")
 ORDINAL = re.compile(r"^\d+(st|nd|rd|th)$", re.IGNORECASE)
 WORD = re.compile(r"\b[\w'\u2019-]+\b", re.UNICODE)
+WORDCHAR = re.compile(r"[\w\u2019'-]", re.UNICODE)
+
+
+def _strip_diacritics(s: str) -> str:
+    nfkd = unicodedata.normalize("NFKD", s)
+    return "".join(c for c in nfkd if not unicodedata.combining(c))
+
+
+def _normalize_term(s: str) -> str:
+    """Case- and diacritic-insensitive key for protected-term comparison."""
+    return _strip_diacritics(s).strip().lower()
+
+
+def load_protected_terms(path) -> set[str]:
+    """
+    Load a protected-terms list: one term per line, '#' starts a comment
+    (inline or whole-line), blank lines ignored. Terms are stored normalized
+    (case-insensitive, diacritics stripped) so lookups are cheap.
+    """
+    terms: set[str] = set()
+    for raw in Path(path).read_text(encoding="utf-8").splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        terms.add(_normalize_term(line))
+    return terms
+
+
+def _enclosing_word(ln: str, start: int, end: int) -> str:
+    """Expand a match span outward across word-ish characters on both sides
+    (bridges a single non-word character like '|' sitting inside a word)."""
+    a, b = start, end
+    while a > 0 and WORDCHAR.match(ln[a - 1]):
+        a -= 1
+    while b < len(ln) and WORDCHAR.match(ln[b]):
+        b += 1
+    return ln[a:b]
 
 
 def _context(line_text: str, span: tuple[int, int], width: int = 32) -> str:
@@ -278,23 +320,65 @@ def curl_quotes(text: str, log: ChangeLog) -> str:
 # --------------------------------------------------------------------------- #
 
 
-def flag_confusions(text: str, log: ChangeLog) -> None:
-    """High-precision patterns that usually indicate an OCR error. Report only."""
+def flag_confusions(text: str, log: ChangeLog, protected: set[str] | None = None) -> None:
+    """High-precision patterns that usually indicate an OCR error. Report only.
+
+    If `protected` is given (see load_protected_terms), a flag is suppressed
+    when the token it's about — or, for vv/pipe, the token with the pattern's
+    own suggested fix undone — matches a protected term. Nothing is ever
+    changed by this; a match just means "a human already decided this one is
+    fine," so it's logged as a protected-skip instead of a flag.
+    """
+    protected = protected or set()
+
+    def is_protected(*candidates: str) -> str | None:
+        for c in candidates:
+            if _normalize_term(c) in protected:
+                return c
+        return None
+
     for i, ln in enumerate(text.split("\n"), 1):
         for m in WORD.finditer(ln):
             tok = m.group(0)
             has_alpha = any(c.isalpha() for c in tok)
             has_digit = any(c.isdigit() for c in tok)
             if has_alpha and has_digit and not ORDINAL.match(tok):
+                hit = is_protected(tok)
+                if hit:
+                    log.protected_skip("confusion", i, _context(ln, m.span()),
+                                        f"protected term matched: {hit!r}")
+                    continue
                 log.flag("confusion", i, _context(ln, m.span()),
                          f"digit inside word: {tok!r} (0/1/5<->O/l/S?)")
         for m in re.finditer(r"vv", ln):
+            word = _enclosing_word(ln, *m.span())
+            hit = is_protected(word, word.replace("vv", "w"))
+            if hit:
+                log.protected_skip("confusion", i, _context(ln, m.span()),
+                                    f"protected term matched: {hit!r}")
+                continue
             log.flag("confusion", i, _context(ln, m.span()), "'vv' — likely 'w'")
         for m in re.finditer(r"\|", ln):
+            word = _enclosing_word(ln, *m.span())
+            hit = is_protected(word, word.replace("|", "l"), word.replace("|", "I"))
+            if hit:
+                log.protected_skip("confusion", i, _context(ln, m.span()),
+                                    f"protected term matched: {hit!r}")
+                continue
             log.flag("confusion", i, _context(ln, m.span()), "pipe '|' — likely 'I' or 'l'")
         for m in re.finditer(r"\bl\b", ln):
+            hit = is_protected(m.group(0))
+            if hit:
+                log.protected_skip("confusion", i, _context(ln, m.span()),
+                                    f"protected term matched: {hit!r}")
+                continue
             log.flag("confusion", i, _context(ln, m.span()), "lone 'l' — likely 'I' or '1'")
         for m in re.finditer(r"\brn\b", ln):
+            hit = is_protected(m.group(0), "m")
+            if hit:
+                log.protected_skip("confusion", i, _context(ln, m.span()),
+                                    f"protected term matched: {hit!r}")
+                continue
             log.flag("confusion", i, _context(ln, m.span()), "'rn' as a word — likely 'm'")
 
 
@@ -309,6 +393,7 @@ class Options:
     curl_quotes: bool = False
     strip_detected_headers: bool = False
     header_patterns: list[str] = field(default_factory=list)
+    protected_terms: set[str] = field(default_factory=set)
 
 
 def run_pipeline(raw: str, opts: Options) -> tuple[str, ChangeLog]:
@@ -326,7 +411,7 @@ def run_pipeline(raw: str, opts: Options) -> tuple[str, ChangeLog]:
     if opts.curl_quotes:
         text = curl_quotes(text, log)
 
-    flag_confusions(text, log)   # inspect the cleaned text, change nothing
+    flag_confusions(text, log, opts.protected_terms)   # inspect cleaned text, change nothing
     return text, log
 
 
@@ -345,6 +430,9 @@ def make_report(log: ChangeLog, raw: str, cleaned: str, sample_cap: int = 40) ->
     lines.append(f"- Output lines: {len(cleaned.splitlines())}")
     lines.append(f"- Auto changes: {sum(v for (s, k), v in counts.items() if k == 'auto')}")
     lines.append(f"- Flagged for review: {sum(v for (s, k), v in counts.items() if k == 'flag')}")
+    protected_n = sum(v for (s, k), v in counts.items() if k == "protected")
+    if protected_n:
+        lines.append(f"- Skipped via --protect-file (already-known terms): {protected_n}")
     lines.append("")
     lines.append("| Stage | Auto | Flagged |")
     lines.append("|---|---|---|")
@@ -371,6 +459,17 @@ def make_report(log: ChangeLog, raw: str, cleaned: str, sample_cap: int = 40) ->
             if len(items) > sample_cap:
                 lines.append(f"- …and {len(items) - sample_cap} more")
             lines.append("")
+
+    skipped = [r for r in log.records if r.kind == "protected"]
+    if skipped:
+        lines.append("## Skipped via protected terms")
+        lines.append("*Matched --protect-file — not flagged, not changed.*")
+        lines.append("")
+        for r in skipped[:sample_cap]:
+            lines.append(f"- L{r.line}: `{r.before}` — {r.note}")
+        if len(skipped) > sample_cap:
+            lines.append(f"- …and {len(skipped) - sample_cap} more")
+        lines.append("")
 
     auto = [r for r in log.records if r.kind == "auto" and r.stage != "reflow"]
     if auto:
@@ -423,6 +522,9 @@ def main(argv=None):
                    help="remove auto-detected repeated header lines (else just flag)")
     p.add_argument("--header-pattern", action="append", default=[],
                    help="regex for a header/footer to strip (repeatable)")
+    p.add_argument("--protect-file",
+                   help="word list (one term/line, '#' comments) — matching tokens "
+                        "are skipped during confusion detection, case/diacritic-insensitive")
     p.add_argument("--demo", action="store_true", help="run on built-in sample")
     args = p.parse_args(argv)
 
@@ -433,11 +535,13 @@ def main(argv=None):
     else:
         p.error("provide an input file or use --demo")
 
+    protected_terms = load_protected_terms(args.protect_file) if args.protect_file else set()
     opts = Options(
         reflow=args.reflow,
         curl_quotes=args.curl_quotes,
         strip_detected_headers=args.strip_detected_headers,
         header_patterns=args.header_pattern,
+        protected_terms=protected_terms,
     )
     cleaned, log = run_pipeline(raw, opts)
     report = make_report(log, raw, cleaned)

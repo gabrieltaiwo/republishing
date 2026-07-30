@@ -1,0 +1,54 @@
+# yoruba-terms.txt — protected terms for tools/ocr_cleanup.py --protect-file
+#
+# One term per line. '#' starts a comment (inline or whole-line). Matching is
+# case-insensitive and diacritic-insensitive. A match SKIPS a confusion flag
+# only — it never changes any text. Nothing here touches the dehyphenate or
+# hyphen-before-capital flags; those still go to Gate 2 review as-is.
+#
+# Two sections below: (1) clean canonical spellings — names, titles, places
+# common throughout Yoruba history texts; (2) recurring OCR-corrupted forms
+# actually seen in history-of-the-yorubas/text/report.md, added only where
+# the surrounding context confirmed them as a real, repeated name (not a
+# one-off — those stay flagged for manual proofing).
+
+# --- Names, titles, places (clean spellings) ---
+Alaafin
+Oyo
+Oduduwa
+Ilorin
+Ife
+Ibadan
+Modakeke
+Ijaye
+Egba
+Ijebu
+Ekiti
+Abeokuta
+Owa
+Ondo
+Ilesa
+Ekitiparapo
+Kakanfo
+Balogun
+Basorun
+Bale
+Ooni
+
+# --- Recurring digit-corrupted forms confirmed by context in the Gate 2 report ---
+# (the OCR consistently renders this book's "o with underdot" as a digit,
+#  usually '6' — these are the same real name/place/title every time)
+Ow6ni       # "Ow6ni of Ife" — royal title, 11 occurrences, e.g. report.md L3452, L8719
+Abem6       # "Abem6" — town in the Ijaye War narrative, 11 occurrences, e.g. L9441, L10074
+Amod6       # "King Amod6" — personal name, 6 occurrences, e.g. L8945, L8949
+Or6         # recurring place/name token, 3 occurrences, e.g. L6488, L9723
+Ow6re       # "the Ow6re of Otun" — chieftaincy title, 3 occurrences, e.g. L3706, L16860
+K61oh6      # "K61oh6" — public executioner's name, 3 occurrences, e.g. L13251, L13256
+M6m6        # "M6m6 the heir apparent" — personal name, 3 occurrences, L13956
+Ep6         # "the Ep6 districts" — place name, 2 occurrences, e.g. L9438, L9497
+Onibiy6     # "Onibiy6 of Guguru" — personal name, 2 occurrences, L6878
+06run       # "At 06run (a Gbagura town)" — place name confirmed in-text, L9126, L9135
+Ay6         # "chief Ay6" — personal name, 2 occurrences, L9436, L9442
+E16po       # personal/chief name, 2 occurrences, L9838, L10478
+Tub6sun     # "Tub6sun, who became the Otun Balogun" — personal name, 2 occurrences, L11101, L12671
+Away6       # "the Away6 people" — place name (a besieged town), 2 occurrences, L12235, L12248
+Od6         # place name in a list of towns, 2 occurrences, L3224, L8729
