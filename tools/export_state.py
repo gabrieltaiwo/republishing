@@ -243,11 +243,106 @@ def format_size(num_bytes: int) -> str:
     return f"{round(num_bytes / 1024)} KB"
 
 
+def build_book_reader_sections(
+    apparatus: list[dict], clean_txt_path: Path
+) -> list[dict]:
+    sections: list[dict] = []
+
+    # 1. Front matter (Apparatus)
+    for app in apparatus:
+        sections.append(
+            {
+                "id": f"app-{app['filename']}",
+                "title": f"[Front Matter] {app['title']}",
+                "word_count": app["word_count"],
+                "content": app["content"],
+            }
+        )
+
+    if not clean_txt_path.exists():
+        return sections
+
+    raw_text = clean_txt_path.read_text(encoding="utf-8", errors="ignore")
+    # Strip Project Gutenberg boilerplate if present
+    start_m = re.search(
+        r"\*\*\*\s*START OF (?:THE|THIS) PROJECT GUTENBERG EBOOK.*?\*\*\*",
+        raw_text,
+        re.IGNORECASE,
+    )
+    if start_m:
+        raw_text = raw_text[start_m.end() :]
+    end_m = re.search(
+        r"\*\*\*\s*END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK",
+        raw_text,
+        re.IGNORECASE,
+    )
+    if end_m:
+        raw_text = raw_text[: end_m.start()]
+
+    # Split into logical chapters or ~3,500-word reading sections
+    paragraphs = [p.strip() for p in re.split(r"\n\s*\n", raw_text) if p.strip()]
+    chunk_paras: list[str] = []
+    chunk_words = 0
+    chunk_title = "Part 1 — Opening & Preface"
+    part_idx = 1
+
+    chapter_pat = re.compile(
+        r"^(?:CHAPTER|CHAP\.|SECTION|PART|STORY|I+\.\s|II+\.\s|III+\.\s|IV+\.\s|V+\.\s|[IVXLCDM]+\.\s--)",
+        re.IGNORECASE,
+    )
+
+    for p in paragraphs:
+        first_line = p.splitlines()[0].strip()
+        is_heading = (
+            len(first_line) < 90
+            and (
+                chapter_pat.match(first_line)
+                or (first_line.isupper() and len(first_line) > 5)
+            )
+            and len(p.splitlines()) <= 3
+        )
+
+        p_words = len(p.split())
+        if (is_heading and chunk_words >= 1200) or chunk_words >= 4000:
+            sections.append(
+                {
+                    "id": f"sec-{part_idx}",
+                    "title": chunk_title,
+                    "word_count": chunk_words,
+                    "content": "\n\n".join(chunk_paras),
+                }
+            )
+            part_idx += 1
+            chunk_paras = []
+            chunk_words = 0
+            if is_heading:
+                chunk_title = f"Part {part_idx} — {first_line.title()}"
+            else:
+                chunk_title = f"Part {part_idx}"
+
+        chunk_paras.append(p)
+        chunk_words += p_words
+
+    if chunk_paras:
+        sections.append(
+            {
+                "id": f"sec-{part_idx}",
+                "title": chunk_title,
+                "word_count": chunk_words,
+                "content": "\n\n".join(chunk_paras),
+            }
+        )
+
+    return sections
+
+
 def main() -> None:
     COVERS_OUT = PUBLIC_DIR / "covers"
     DOWNLOADS_OUT = PUBLIC_DIR / "downloads"
+    BOOKS_OUT = PUBLIC_DIR / "books"
     COVERS_OUT.mkdir(parents=True, exist_ok=True)
     DOWNLOADS_OUT.mkdir(parents=True, exist_ok=True)
+    BOOKS_OUT.mkdir(parents=True, exist_ok=True)
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     year_now = datetime.date.today().year
@@ -302,6 +397,20 @@ def main() -> None:
         if pdf_path.exists():
             shutil.copy2(pdf_path, DOWNLOADS_OUT / f"{slug}.pdf")
             pdf_url = f"/downloads/{slug}.pdf"
+
+        reader_sections = build_book_reader_sections(apparatus, clean_txt)
+        (BOOKS_OUT / f"{slug}.json").write_text(
+            json.dumps(
+                {
+                    "slug": slug,
+                    "title": title,
+                    "author": author,
+                    "sections": reader_sections,
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
 
         apparatus_complete = len(apparatus) > 0 and all(
             a["is_complete"] for a in apparatus

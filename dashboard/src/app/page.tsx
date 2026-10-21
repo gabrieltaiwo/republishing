@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import catalogData from "../data/catalog.json";
 import {
   BookOpen,
@@ -17,31 +17,99 @@ import {
   Eye,
   Search,
   Terminal,
+  ChevronLeft,
+  ChevronRight,
+  FileCode2,
 } from "lucide-react";
 
 type CatalogType = typeof catalogData;
 type BookItem = CatalogType["titles"][number];
 
+interface ReaderSection {
+  id: string;
+  title: string;
+  word_count: number;
+  content: string;
+}
+
+interface BookReaderPayload {
+  slug: string;
+  title: string;
+  author: string;
+  sections: ReaderSection[];
+}
+
+type ModalTab =
+  | "reader"
+  | "gates"
+  | "ocr"
+  | "apparatus"
+  | "listing"
+  | "covers";
+
 export default function DashboardPage() {
   const [selectedBook, setSelectedBook] = useState<BookItem | null>(null);
-  const [activeTab, setActiveTab] = useState<
-    "gates" | "ocr" | "apparatus" | "listing" | "covers"
-  >("gates");
+  const [activeTab, setActiveTab] = useState<ModalTab>("reader");
   const [coverVariant, setCoverVariant] = useState<"centered" | "watermark">(
     "centered"
   );
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [filterProof, setFilterProof] = useState<string>("all");
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
 
-  const openBookModal = (
-    book: BookItem,
-    defaultTab: "gates" | "ocr" | "apparatus" | "listing" | "covers" = "gates"
-  ) => {
+  // Book Reader State
+  const [readerMode, setReaderMode] = useState<"ereader" | "pdf">("ereader");
+  const [bookContent, setBookContent] = useState<BookReaderPayload | null>(
+    null
+  );
+  const [loadingBook, setLoadingBook] = useState(false);
+  const [currentSectionIdx, setCurrentSectionIdx] = useState(0);
+  const [readerTheme, setReaderTheme] = useState<"cream" | "white" | "dark">(
+    "cream"
+  );
+  const [fontSize, setFontSize] = useState<number>(17);
+  const [readerSearch, setReaderSearch] = useState<string>("");
+
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const readerPaneRef = useRef<HTMLDivElement | null>(null);
+
+  const openBookModal = (book: BookItem, defaultTab: ModalTab = "reader") => {
     setSelectedBook(book);
     setActiveTab(defaultTab);
+    setCurrentSectionIdx(0);
+    setReaderSearch("");
     if (dialogRef.current && !dialogRef.current.open) {
       dialogRef.current.showModal();
+    }
+  };
+
+  useEffect(() => {
+    if (!selectedBook) {
+      setBookContent(null);
+      return;
+    }
+    let cancelled = false;
+    setLoadingBook(true);
+    fetch(`/books/${selectedBook.slug}.json`)
+      .then((res) => res.json())
+      .then((data: BookReaderPayload) => {
+        if (!cancelled) {
+          setBookContent(data);
+          setCurrentSectionIdx(0);
+          setLoadingBook(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setLoadingBook(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedBook]);
+
+  const selectReaderSection = (idx: number) => {
+    setCurrentSectionIdx(idx);
+    if (readerPaneRef.current) {
+      readerPaneRef.current.scrollTop = 0;
     }
   };
 
@@ -63,6 +131,22 @@ export default function DashboardPage() {
     return t.proof_level === filterProof;
   });
 
+  const activeSection =
+    bookContent && bookContent.sections[currentSectionIdx]
+      ? bookContent.sections[currentSectionIdx]
+      : null;
+
+  const matchingSections =
+    bookContent && readerSearch.trim().length > 1
+      ? bookContent.sections
+          .map((sec, idx) => ({ sec, idx }))
+          .filter(
+            ({ sec }) =>
+              sec.title.toLowerCase().includes(readerSearch.toLowerCase()) ||
+              sec.content.toLowerCase().includes(readerSearch.toLowerCase())
+          )
+      : null;
+
   return (
     <div className="min-h-dvh flex flex-col">
       {/* Top Editorial Header */}
@@ -82,7 +166,7 @@ export default function DashboardPage() {
             </div>
             <p className="text-sm text-stone-600 mt-1">
               Foundational West African &amp; Historical Editions · 6-Gate
-              Production Pipeline
+              Production Pipeline &amp; Built-In Book Reader
             </p>
           </div>
 
@@ -215,7 +299,7 @@ export default function DashboardPage() {
                   <th className="py-3 px-3">Gate 3: Apparatus</th>
                   <th className="py-3 px-3">Gate 4: Build</th>
                   <th className="py-3 px-3">Gate 5: KDP Listing</th>
-                  <th className="py-3 pl-3 text-right">Inspect</th>
+                  <th className="py-3 pl-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
@@ -326,13 +410,22 @@ export default function DashboardPage() {
                       </td>
 
                       <td className="py-3.5 pl-3 text-right">
-                        <button
-                          onClick={() => openBookModal(book, "gates")}
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-stone-900 text-white hover:bg-stone-800 transition cursor-pointer"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                          Open Card
-                        </button>
+                        <div className="inline-flex items-center gap-1.5">
+                          <button
+                            onClick={() => openBookModal(book, "reader")}
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-900 text-white hover:bg-amber-800 transition cursor-pointer"
+                          >
+                            <BookOpen className="w-3.5 h-3.5" />
+                            Read Book
+                          </button>
+                          <button
+                            onClick={() => openBookModal(book, "gates")}
+                            className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-stone-100 text-stone-800 hover:bg-stone-200 transition cursor-pointer"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            Gates
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -349,8 +442,8 @@ export default function DashboardPage() {
               Edition Production Cards ({filteredTitles.length})
             </h2>
             <span className="text-xs text-stone-500">
-              Click any section on a card to inspect its files, OCR flags, or
-              KDP metadata
+              Click &ldquo;Read &amp; Preview&rdquo; on any card to read the
+              finished book right inside the dashboard
             </span>
           </div>
 
@@ -378,10 +471,10 @@ export default function DashboardPage() {
                   <div className="flex gap-4">
                     {book.build.cover_url ? (
                       <button
-                        onClick={() => openBookModal(book, "covers")}
+                        onClick={() => openBookModal(book, "reader")}
                         className="w-20 shrink-0 rounded-md border border-stone-200 overflow-clip shadow-xs hover:opacity-90 transition cursor-pointer"
                         style={{ aspectRatio: "2 / 3" }}
-                        title="Click to preview both cover variants"
+                        title="Click to read book"
                       >
                         <img
                           src={book.build.cover_url}
@@ -508,10 +601,11 @@ export default function DashboardPage() {
                     </div>
 
                     <button
-                      onClick={() => openBookModal(book, "gates")}
+                      onClick={() => openBookModal(book, "reader")}
                       className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md bg-amber-900 text-white hover:bg-amber-800 transition cursor-pointer ml-auto"
                     >
-                      Inspect Edition
+                      <BookOpen className="w-3.5 h-3.5" />
+                      Read &amp; Preview
                     </button>
                   </div>
                 </article>
@@ -521,7 +615,7 @@ export default function DashboardPage() {
         </section>
       </main>
 
-      {/* Native HTML <dialog> Modal for Deep Title Inspection */}
+      {/* Native HTML <dialog> Modal for Book Reading & Deep Inspection */}
       <dialog
         ref={dialogRef}
         className="detail-modal m-auto"
@@ -546,8 +640,8 @@ export default function DashboardPage() {
                 <p className="text-xs text-stone-600">
                   By {selectedBook.author} (d. {selectedBook.death_year}) ·
                   First published {selectedBook.pub_year} ·{" "}
-                  {selectedBook.clean_word_count.toLocaleString("en-US")} words (~
-                  {selectedBook.estimated_pages} pages)
+                  {selectedBook.clean_word_count.toLocaleString("en-US")} words
+                  (~{selectedBook.estimated_pages} pages)
                 </p>
               </div>
 
@@ -564,28 +658,33 @@ export default function DashboardPage() {
             <div className="px-6 border-b border-stone-200 bg-stone-50 flex flex-wrap gap-1">
               {[
                 {
+                  id: "reader",
+                  label: "📖 Read & Preview Book",
+                  icon: BookOpen,
+                },
+                {
                   id: "gates",
-                  label: "1. Gate Checklist",
+                  label: "Gate Checklist",
                   icon: Layers,
                 },
                 {
                   id: "ocr",
-                  label: `2. Proofing & OCR (${selectedBook.ocr.flagged_count} flags)`,
+                  label: `Proofing & OCR (${selectedBook.ocr.flagged_count} flags)`,
                   icon: Search,
                 },
                 {
                   id: "apparatus",
-                  label: `3. Scholarly Apparatus (${selectedBook.apparatus.length})`,
-                  icon: BookOpen,
+                  label: `Apparatus Files (${selectedBook.apparatus.length})`,
+                  icon: FileCode2,
                 },
                 {
                   id: "covers",
-                  label: "4. Cover Studio",
+                  label: "Cover Studio",
                   icon: Eye,
                 },
                 {
                   id: "listing",
-                  label: "5. KDP Listing Copy",
+                  label: "KDP Listing Copy",
                   icon: FileText,
                 },
               ].map((tab) => {
@@ -594,16 +693,7 @@ export default function DashboardPage() {
                 return (
                   <button
                     key={tab.id}
-                    onClick={() =>
-                      setActiveTab(
-                        tab.id as
-                          | "gates"
-                          | "ocr"
-                          | "apparatus"
-                          | "listing"
-                          | "covers"
-                      )
-                    }
+                    onClick={() => setActiveTab(tab.id as ModalTab)}
                     className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
                       active
                         ? "border-amber-900 text-amber-950 bg-white"
@@ -619,6 +709,271 @@ export default function DashboardPage() {
 
             {/* Modal Scrollable Content Region */}
             <div className="modal-scroll-region p-6 space-y-6">
+              {/* TAB 0: INTERACTIVE BOOK READER & PDF VIEWER */}
+              {activeTab === "reader" && (
+                <div className="space-y-4">
+                  {/* Reader Mode & Controls Bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 bg-stone-100 p-3 rounded-lg border border-stone-200">
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => setReaderMode("ereader")}
+                        className={`px-3 py-1.5 rounded-md text-xs font-semibold transition cursor-pointer ${
+                          readerMode === "ereader"
+                            ? "bg-stone-900 text-white"
+                            : "bg-white text-stone-700 border border-stone-300"
+                        }`}
+                      >
+                        Interactive E-Reader (Chapters + Search)
+                      </button>
+                      <button
+                        onClick={() => setReaderMode("pdf")}
+                        className={`px-3 py-1.5 rounded-md text-xs font-semibold transition cursor-pointer ${
+                          readerMode === "pdf"
+                            ? "bg-stone-900 text-white"
+                            : "bg-white text-stone-700 border border-stone-300"
+                        }`}
+                      >
+                        Typeset Print PDF Preview
+                      </button>
+                    </div>
+
+                    {readerMode === "ereader" && (
+                      <div className="flex flex-wrap items-center gap-2">
+                        {/* Search inside book */}
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={readerSearch}
+                            onChange={(e) => setReaderSearch(e.target.value)}
+                            placeholder="Search inside book..."
+                            className="text-xs px-2.5 py-1.5 rounded-md border border-stone-300 bg-white text-stone-900 w-44 focus:outline-none focus:border-amber-800"
+                          />
+                        </div>
+
+                        {/* Font Size Controls */}
+                        <div className="inline-flex items-center rounded-md border border-stone-300 bg-white overflow-clip text-xs">
+                          <button
+                            onClick={() =>
+                              setFontSize((f) => Math.max(13, f - 2))
+                            }
+                            className="px-2.5 py-1 hover:bg-stone-100 font-serif font-bold cursor-pointer"
+                            title="Smaller font"
+                          >
+                            A-
+                          </button>
+                          <span className="px-2 py-1 border-x border-stone-200 text-stone-500 font-mono text-[11px]">
+                            {fontSize}px
+                          </span>
+                          <button
+                            onClick={() =>
+                              setFontSize((f) => Math.min(25, f + 2))
+                            }
+                            className="px-2.5 py-1 hover:bg-stone-100 font-serif font-bold cursor-pointer"
+                            title="Larger font"
+                          >
+                            A+
+                          </button>
+                        </div>
+
+                        {/* Paper Theme Controls */}
+                        <div className="inline-flex items-center rounded-md border border-stone-300 bg-white overflow-clip text-xs">
+                          {[
+                            { id: "cream", label: "Cream" },
+                            { id: "white", label: "White" },
+                            { id: "dark", label: "Night" },
+                          ].map((t) => (
+                            <button
+                              key={t.id}
+                              onClick={() =>
+                                setReaderTheme(
+                                  t.id as "cream" | "white" | "dark"
+                                )
+                              }
+                              className={`px-2.5 py-1 font-medium cursor-pointer ${
+                                readerTheme === t.id
+                                  ? "bg-amber-900 text-white"
+                                  : "text-stone-700 hover:bg-stone-100"
+                              }`}
+                            >
+                              {t.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Mode A: Embedded Print PDF Viewer */}
+                  {readerMode === "pdf" && selectedBook.build.pdf_url && (
+                    <div className="rounded-xl border border-stone-300 overflow-clip bg-stone-900">
+                      <iframe
+                        src={selectedBook.build.pdf_url}
+                        title={`PDF Preview of ${selectedBook.title}`}
+                        className="w-full h-[65dvh] border-0"
+                      />
+                    </div>
+                  )}
+
+                  {/* Mode B: Interactive Chapter E-Reader */}
+                  {readerMode === "ereader" && (
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+                      {/* Left Chapter Sidebar */}
+                      <aside className="lg:col-span-4 rounded-xl border border-stone-200 bg-stone-50 overflow-clip">
+                        <div className="px-3.5 py-2.5 bg-stone-100 border-b border-stone-200 flex items-center justify-between">
+                          <span className="text-xs font-bold uppercase tracking-wider text-stone-600">
+                            Table of Contents
+                          </span>
+                          {bookContent && (
+                            <span className="text-[11px] font-mono text-stone-500">
+                              {bookContent.sections.length} sections
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="max-h-[56dvh] overflow-y-auto divide-y divide-stone-200/60">
+                          {loadingBook && (
+                            <div className="p-4 text-xs text-stone-500">
+                              Loading book text...
+                            </div>
+                          )}
+
+                          {matchingSections ? (
+                            matchingSections.length === 0 ? (
+                              <div className="p-4 text-xs text-stone-500">
+                                No chapters match &ldquo;{readerSearch}&rdquo;
+                              </div>
+                            ) : (
+                              matchingSections.map(({ sec, idx }) => (
+                                <button
+                                  key={sec.id}
+                                  onClick={() => selectReaderSection(idx)}
+                                  className={`w-full text-left px-3.5 py-2.5 text-xs transition cursor-pointer ${
+                                    currentSectionIdx === idx
+                                      ? "bg-amber-900 text-white font-semibold"
+                                      : "hover:bg-stone-200/60 text-stone-800"
+                                  }`}
+                                >
+                                  <div className="truncate">{sec.title}</div>
+                                  <div
+                                    className={`text-[10px] mt-0.5 ${
+                                      currentSectionIdx === idx
+                                        ? "text-amber-100"
+                                        : "text-stone-400"
+                                    }`}
+                                  >
+                                    {sec.word_count.toLocaleString("en-US")}{" "}
+                                    words
+                                  </div>
+                                </button>
+                              ))
+                            )
+                          ) : (
+                            bookContent?.sections.map((sec, idx) => (
+                              <button
+                                key={sec.id}
+                                onClick={() => selectReaderSection(idx)}
+                                className={`w-full text-left px-3.5 py-2.5 text-xs transition cursor-pointer ${
+                                  currentSectionIdx === idx
+                                    ? "bg-amber-900 text-white font-semibold"
+                                    : "hover:bg-stone-200/60 text-stone-800"
+                                }`}
+                              >
+                                <div className="truncate">{sec.title}</div>
+                                <div
+                                  className={`text-[10px] mt-0.5 ${
+                                    currentSectionIdx === idx
+                                      ? "text-amber-100"
+                                      : "text-stone-400"
+                                  }`}
+                                >
+                                  {sec.word_count.toLocaleString("en-US")} words
+                                </div>
+                              </button>
+                            ))
+                          )}
+                        </div>
+                      </aside>
+
+                      {/* Right Book Page Canvas */}
+                      <div
+                        ref={readerPaneRef}
+                        className={`lg:col-span-8 rounded-xl border p-6 sm:p-10 max-h-[60dvh] overflow-y-auto shadow-inner transition-colors ${
+                          readerTheme === "cream"
+                            ? "bg-[#f8f4ec] text-[#1f1c18] border-[#e2d9c8]"
+                            : readerTheme === "white"
+                            ? "bg-white text-stone-900 border-stone-200"
+                            : "bg-[#161514] text-[#e6e1d6] border-stone-800"
+                        }`}
+                      >
+                        {activeSection ? (
+                          <article className="max-w-2xl mx-auto">
+                            <div className="pb-4 mb-6 border-b border-current/15 flex items-center justify-between text-xs opacity-70">
+                              <span>{selectedBook.title}</span>
+                              <span>
+                                Section {currentSectionIdx + 1} of{" "}
+                                {bookContent?.sections.length}
+                              </span>
+                            </div>
+
+                            <h3 className="text-xl sm:text-2xl font-serif-editorial font-bold mb-6">
+                              {activeSection.title}
+                            </h3>
+
+                            <div
+                              className="font-serif-editorial whitespace-pre-wrap leading-relaxed space-y-4"
+                              style={{ fontSize: `${fontSize}px` }}
+                            >
+                              {activeSection.content}
+                            </div>
+
+                            {/* Bottom Chapter Pagination */}
+                            <div className="mt-10 pt-5 border-t border-current/15 flex items-center justify-between">
+                              <button
+                                disabled={currentSectionIdx === 0}
+                                onClick={() =>
+                                  selectReaderSection(
+                                    Math.max(0, currentSectionIdx - 1)
+                                  )
+                                }
+                                className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded border border-current/25 disabled:opacity-30 cursor-pointer"
+                              >
+                                <ChevronLeft className="w-4 h-4" />
+                                Previous Section
+                              </button>
+
+                              <span className="text-xs opacity-60 font-mono">
+                                {currentSectionIdx + 1} /{" "}
+                                {bookContent?.sections.length}
+                              </span>
+
+                              <button
+                                disabled={
+                                  !bookContent ||
+                                  currentSectionIdx >=
+                                    bookContent.sections.length - 1
+                                }
+                                onClick={() =>
+                                  selectReaderSection(currentSectionIdx + 1)
+                                }
+                                className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded border border-current/25 disabled:opacity-30 cursor-pointer"
+                              >
+                                Next Section
+                                <ChevronRight className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </article>
+                        ) : (
+                          <div className="text-center py-12 text-sm opacity-60">
+                            Select a section from the Table of Contents to begin
+                            reading.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* TAB 1: GATES */}
               {activeTab === "gates" && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
