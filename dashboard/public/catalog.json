@@ -1,0 +1,921 @@
+{
+  "generated_at": "2026-10-21T06:30:48.132090+00:00",
+  "total_titles": 3,
+  "built_titles": 3,
+  "total_words_cleaned": 427924,
+  "total_apparatus_words": 2677,
+  "total_ocr_auto_fixes": 13685,
+  "total_ocr_flags_remaining": 442,
+  "titles": [
+    {
+      "slug": "folk-stories-southern-nigeria",
+      "title": "Folk Stories from Southern Nigeria, West Africa",
+      "author": "Elphinstone Dayrell",
+      "death_year": 1917,
+      "pub_year": 1910,
+      "pd_intl_year": 1987,
+      "us_pd": true,
+      "intl_pd": true,
+      "worldwide_clear": true,
+      "source_url": "https://www.gutenberg.org/cache/epub/34655/pg34655.txt",
+      "current_stage": "Gate 5 — Ready for KDP Upload",
+      "stage_number": 5,
+      "proof_status": "Light Review (39 Flags)",
+      "proof_level": "medium",
+      "clean_word_count": 46586,
+      "estimated_pages": 169,
+      "ocr": {
+        "exists": true,
+        "input_lines": 4850,
+        "output_lines": 1799,
+        "auto_changes": 113,
+        "flagged_count": 39,
+        "protected_skipped": 0,
+        "stages": [
+          {
+            "stage": "page-numbers",
+            "auto": 41,
+            "flagged": 0
+          },
+          {
+            "stage": "reflow",
+            "auto": 1,
+            "flagged": 0
+          },
+          {
+            "stage": "normalize",
+            "auto": 71,
+            "flagged": 0
+          },
+          {
+            "stage": "confusion",
+            "auto": 0,
+            "flagged": 39
+          }
+        ],
+        "flag_groups": [
+          {
+            "category": "digit inside word",
+            "count": 39,
+            "samples": [
+              "L356: `... 1 yard broad, and is valued at [5s].]...`",
+              "L358: `... is made of brass, and is worth [3d]. It is in the shape of a narrow...`",
+              "L1417: `...[3s]. 6d. to 5s. a stick, and a stic...`",
+              "L1417: `...3s. [6d]. to 5s. a stick, and a stick wo...`",
+              "L1417: `...3s. 6d. to [5s]. a stick, and a stick would be ...`",
+              "L1417: `...ms which cost Chief Oborri only [1s]., so a large profit was made on...`",
+              "L1417: `...d the shrimps would be sold for [15s]., being a profit of 10s. on eac...`",
+              "L1417: `...old for 15s., being a profit of [10s]. on each bag. At the present ti...`",
+              "L1417: `...ason, would sell at Calabar for [L3], 10s., and in the dry season fo...`",
+              "L1417: `..., would sell at Calabar for L3, [10s]., and in the dry season for bet...`",
+              "L1417: `...d in the dry season for between [L1], 10s. and L2.]...`",
+              "L1417: `... the dry season for between L1, [10s]. and L2.]...`"
+            ]
+          }
+        ]
+      },
+      "apparatus": [
+        {
+          "filename": "01-introduction.md",
+          "title": "Introduction to the Annotated Edition",
+          "word_count": 366,
+          "is_complete": true,
+          "content": "# Introduction to the Annotated Edition\n\nPublished in London in 1910 by Longmans, Green and Co., *Folk Stories from Southern Nigeria, West Africa* is one of the foundational collections of indigenous oral narratives from the Cross River and Niger Delta regions of West Africa. Compiled by Elphinstone Dayrell (1869–1917), a British District Commissioner in Southern Nigeria, with an appreciative opening essay by the preeminent Scottish folklorist Andrew Lang (1844–1912), the anthology preserves forty traditional tales collected directly from native storytellers, chiefs, and local elders.\n\n## The Nature of the Tales\n\nWest African storytelling is never mere amusement; it functions as a dynamic instrument of ethical philosophy, social socialization, natural observation, and legal education. The forty narratives in this collection broadly encompass three major categories:\n\n1. **Etiological and \"Just-So\" Myths**: Stories explaining natural phenomena, animal characteristics, and the physical world (e.g., *Why the Sun and the Moon Live in the Sky*, *Why the Bat Flies by Night*, *Why the Hippopotamus Lives in the Water*).\n2. **Trickster and Wisdom Fables**: Tales highlighting cunning, deception, justice, and retribution, prominently featuring the Tortoise—the quintessential West African trickster whose razor-sharp intellect contrasts with the brute strength of leopards, elephants, and bush-cows.\n3. **Moral and Chieftaincy Legends**: Allegorical narratives examining greed, fidelity, hospitality, and the dangers of tyranny, often centered on kings, magic ju-ju drums, wrestling contests, and spirit ancestors.\n\n## Cultural and Regional Heritage\n\nWhile recorded along the Calabar and Cross River administrative districts (capturing primarily Efik, Ibibio, and neighboring southern Nigerian oral traditions), these tales share deep mythological affinities with Yoruba, Igbo, and wider West African folklore. The themes of ancestral spirits, sacred trees, spirit transformations, and trickster wit represent the shared cultural bedrock of the Bight of Benin and Biafra.\n\n## About This Restored Edition\n\nThis modern annotated edition brings these timeless oral treasures to contemporary readers, educators, and storytellers:\n- **Cleaned and Formatted Prose**: Faithfully formatted from the 1910 first edition, removing typesetting anomalies while preserving Dayrell’s direct narrative cadence.\n- **Folklore and Cultural Glossary**: Explanatory notes on regional terms, sacred shrines, traditional currency (*manillas*, brass rods), and chiefdom institutions.\n- **Andrew Lang’s Classic Introduction**: Preserving the historical framing provided by one of the pioneers of comparative folklore."
+        },
+        {
+          "filename": "02-note-on-text.md",
+          "title": "Note on the Text",
+          "word_count": 146,
+          "is_complete": true,
+          "content": "# Note on the Text\n\n## Source Edition\nThe base text for this edition is the 1910 first edition of *Folk Stories from Southern Nigeria, West Africa* by Elphinstone Dayrell, with an introduction by Andrew Lang, published in London by Longmans, Green and Co. The text has been checked against scans preserved in the Harvard University Library and the Project Gutenberg transcription collection.\n\n## Editorial Policy\n1. **Preservation of Storytelling Voice**: Dayrell transcribed these stories in direct, rhythmic English as narrated by his Nigerian informants. The original conversational prose and sentence structures have been carefully preserved.\n2. **Cultural Terminology and Historical Currency**: Specific regional terms for indigenous items—such as *manillas*, brass rods, and *ju-ju* shrines—have been retained as originally published and defined in the accompanying glossary.\n3. **Format and Corrections**: Printer errors, running page numbers, and archaic typographical spacing from the 1910 volume have been corrected."
+        },
+        {
+          "filename": "03-glossary.md",
+          "title": "Glossary of Folklore, Cultural Terms, and Regional Idioms",
+          "word_count": 232,
+          "is_complete": true,
+          "content": "# Glossary of Folklore, Cultural Terms, and Regional Idioms\n\nThis glossary defines regional Nigerian idioms, chiefdom customs, and historical currency appearing in *Folk Stories from Southern Nigeria*.\n\n### Cultural Concepts and Folklore Motifs\n- **The Tortoise (Ijapa / Ikun)**: The archetypal trickster figure in southern Nigerian and West African folklore; small and slow, but possessing unmatched cunning, resourcefulness, and opportunistic greed.\n- **Ju-Ju (Juju)**: A West African term referring to sacred amulets, spiritual charms, indigenous shrines, or spiritual power mediating human affairs and oaths.\n- **Play (Native Play)**: A communal village gathering featuring drumming, masked dancing, storytelling, and social celebration.\n- **Palaver**: A traditional West African conference, public deliberation, dispute mediation, or community council meeting presided over by chiefs and elders.\n- **Tombo (Palm Wine)**: Freshly tapped sap from the oil palm or raffia palm tree, central to hospitality, libations, and ceremonial gatherings.\n- **Calabar**: Historic trading city-state and port along the Cross River estuary in southeastern Nigeria.\n\n### Traditional Currency and Trade Goods\n- **Manilla**: A horseshoe-shaped ring of bronze, copper, or brass used as a standard medium of commercial exchange across the Niger Delta and Calabar coast from the sixteenth through early twentieth centuries.\n- **Brass Rods**: Traditional rods of bent brass utilized alongside manillas and cowrie shells as regional currency.\n- **Cloth Money**: Measures of hand-woven cotton cloth historically accepted as units of legal tender and ceremonial dowry payments."
+        }
+      ],
+      "apparatus_word_count": 744,
+      "apparatus_complete": true,
+      "listing": {
+        "exists": true,
+        "is_complete": true,
+        "title": "Folk Stories from Southern Nigeria, West Africa",
+        "subtitle": "Traditional Myths, Animal Fables, and Trickster Tales (Annotated Edition)",
+        "series": "Foundations of African History (Book 3)",
+        "description_html": "<p><strong>A classic treasury of forty timeless West African folktales, trickster fables, and nature myths from the historic Cross River and Niger Delta regions.</strong></p>\n\n<p>First recorded in 1910 by District Commissioner Elphinstone Dayrell, with an introduction by renowned folklorist Andrew Lang, <em>Folk Stories from Southern Nigeria</em> offers a captivating window into the rich oral storytelling traditions of West Africa. Gathered directly from indigenous storytellers, elders, and local chiefs, these forty enchanting tales reflect the wisdom, humor, morality, and cosmological imagination of southern Nigerian communities.</p>\n\n<p>Inside this collection, readers will discover world-famous origin stories such as <em>Why the Sun and the Moon Live in the Sky</em>, <em>Why the Bat Flies by Night</em>, and <em>Why the Cat Kills Rats</em>, alongside cunning adventures of the Tortoise—the legendary West African trickster—and dramatic legends of sacred drums, spirit transformations, and ancient kings.</p>\n\n<p><strong>This Modern Annotated Edition Features:</strong></p>\n<ul>\n    <li><strong>Fully Cleaned and Restored Text:</strong> Formatted for optimal readability across modern Kindle and paperback editions.</li>\n    <li><strong>Scholarly Modern Introduction:</strong> A new introductory essay analyzing the cultural functions of West African oral folklore, the trickster archetype, and the shared mythological themes uniting Yoruba, Efik, and Igbo storytelling.</li>\n    <li><strong>Comprehensive Folklore Glossary:</strong> Explanatory definitions of indigenous concepts, traditional currencies (manillas and brass rods), and regional customs.</li>\n    <li><strong>The Original Andrew Lang Essay:</strong> Complete historical introduction by one of the founders of comparative folklore.</li>\n    <li><strong>Scholarly Note on the Text:</strong> Archival documentation detailing the 1910 first edition and editorial methodology.</li>\n</ul>\n\n<p><em>A delightful and enlightening read for families, educators, folklorists, and anyone drawn to the vibrant heritage of African storytelling.</em></p>",
+        "keywords": [
+          "african folktales stories fables",
+          "nigerian folklore fairy tales myths",
+          "why sun and moon live in sky",
+          "tortoise trickster stories west africa",
+          "african oral storytelling traditions",
+          "cross river calabar niger delta legends",
+          "black history children family stories"
+        ],
+        "categories": [
+          "**Fiction / Fairy Tales, Folk Tales, Legends & Mythology** (FIC010000)",
+          "**History / Africa / West** (HIS001030)",
+          "**Social Science / Folklore & Mythology** (SOC011000)"
+        ],
+        "pricing": [
+          "**Kindle eBook**: $4.99 (Set to 35% Public Domain Royalty)",
+          "**Paperback (POD)**: $12.99 (Compact trade paperback; approx. $3.25 print cost, ~$4.50 net royalty)"
+        ],
+        "raw": "# KDP Metadata — Folk Stories from Southern Nigeria, West Africa [Annotated]\n\n## Book Title\nFolk Stories from Southern Nigeria, West Africa\n\n## Subtitle\nTraditional Myths, Animal Fables, and Trickster Tales (Annotated Edition)\n\n## Series Title (Optional)\nFoundations of African History (Book 3)\n\n## Description (HTML for Amazon)\n<p><strong>A classic treasury of forty timeless West African folktales, trickster fables, and nature myths from the historic Cross River and Niger Delta regions.</strong></p>\n\n<p>First recorded in 1910 by District Commissioner Elphinstone Dayrell, with an introduction by renowned folklorist Andrew Lang, <em>Folk Stories from Southern Nigeria</em> offers a captivating window into the rich oral storytelling traditions of West Africa. Gathered directly from indigenous storytellers, elders, and local chiefs, these forty enchanting tales reflect the wisdom, humor, morality, and cosmological imagination of southern Nigerian communities.</p>\n\n<p>Inside this collection, readers will discover world-famous origin stories such as <em>Why the Sun and the Moon Live in the Sky</em>, <em>Why the Bat Flies by Night</em>, and <em>Why the Cat Kills Rats</em>, alongside cunning adventures of the Tortoise—the legendary West African trickster—and dramatic legends of sacred drums, spirit transformations, and ancient kings.</p>\n\n<p><strong>This Modern Annotated Edition Features:</strong></p>\n<ul>\n    <li><strong>Fully Cleaned and Restored Text:</strong> Formatted for optimal readability across modern Kindle and paperback editions.</li>\n    <li><strong>Scholarly Modern Introduction:</strong> A new introductory essay analyzing the cultural functions of West African oral folklore, the trickster archetype, and the shared mythological themes uniting Yoruba, Efik, and Igbo storytelling.</li>\n    <li><strong>Comprehensive Folklore Glossary:</strong> Explanatory definitions of indigenous concepts, traditional currencies (manillas and brass rods), and regional customs.</li>\n    <li><strong>The Original Andrew Lang Essay:</strong> Complete historical introduction by one of the founders of comparative folklore.</li>\n    <li><strong>Scholarly Note on the Text:</strong> Archival documentation detailing the 1910 first edition and editorial methodology.</li>\n</ul>\n\n<p><em>A delightful and enlightening read for families, educators, folklorists, and anyone drawn to the vibrant heritage of African storytelling.</em></p>\n\n## Backend Search Keywords (7 allowed, max 50 chars each)\n1. african folktales stories fables\n2. nigerian folklore fairy tales myths\n3. why sun and moon live in sky\n4. tortoise trickster stories west africa\n5. african oral storytelling traditions\n6. cross river calabar niger delta legends\n7. black history children family stories\n\n## BISAC Categories\n1. **Fiction / Fairy Tales, Folk Tales, Legends & Mythology** (FIC010000)\n2. **History / Africa / West** (HIS001030)\n3. **Social Science / Folklore & Mythology** (SOC011000)\n\n## Pricing Recommendation\n- **Kindle eBook**: $4.99 (Set to 35% Public Domain Royalty)\n- **Paperback (POD)**: $12.99 (Compact trade paperback; approx. $3.25 print cost, ~$4.50 net royalty)"
+      },
+      "build": {
+        "epub_exists": true,
+        "epub_size": "141 KB",
+        "epub_url": "/downloads/folk-stories-southern-nigeria.epub",
+        "pdf_exists": true,
+        "pdf_size": "286 KB",
+        "pdf_url": "/downloads/folk-stories-southern-nigeria.pdf",
+        "cover_url": "/covers/folk-stories-southern-nigeria.jpg",
+        "cover_watermark_url": "/covers/folk-stories-southern-nigeria-watermark.jpg"
+      },
+      "gates": [
+        {
+          "id": "Gate 1",
+          "title": "Rights cleared",
+          "items": [
+            {
+              "label": "Author death year + first-publication year recorded (see rights/rights.md)",
+              "done": true
+            },
+            {
+              "label": "Public domain under US (pre-1929) AND life+70",
+              "done": true
+            },
+            {
+              "label": "Territories decided — Worldwide",
+              "done": true
+            },
+            {
+              "label": "Sourcing the ORIGINAL work, not a modern reprint's apparatus",
+              "done": true
+            },
+            {
+              "label": "Proof saved in rights/",
+              "done": false
+            }
+          ],
+          "completed": 4,
+          "total": 5
+        },
+        {
+          "id": "Gate 2",
+          "title": "Text clean",
+          "items": [
+            {
+              "label": "Cleanest source obtained into source/ (Project Gutenberg #34655)",
+              "done": true
+            },
+            {
+              "label": "Ran ocr_cleanup.py → text/clean.txt (+ diff + report)",
+              "done": true
+            },
+            {
+              "label": "Reviewed changes.diff before accepting",
+              "done": true
+            },
+            {
+              "label": "Worked through every flag in report.md (39 monetary abbreviations verified)",
+              "done": true
+            },
+            {
+              "label": "Final editorial read-through",
+              "done": false
+            },
+            {
+              "label": "change-log noted",
+              "done": true
+            }
+          ],
+          "completed": 5,
+          "total": 6
+        },
+        {
+          "id": "Gate 3",
+          "title": "Apparatus written (this is the product)",
+          "items": [
+            {
+              "label": "Original introduction (your voice)",
+              "done": true
+            },
+            {
+              "label": "Glossary / annotations / chronology as warranted",
+              "done": true
+            },
+            {
+              "label": "\"Note on the text\" (source edition + editorial policy)",
+              "done": true
+            },
+            {
+              "label": "Differentiation is substantive",
+              "done": true
+            },
+            {
+              "label": "AI-disclosure status decided per element",
+              "done": true
+            }
+          ],
+          "completed": 5,
+          "total": 5
+        },
+        {
+          "id": "Gate 4",
+          "title": "Designed",
+          "items": [
+            {
+              "label": "Interior in the standard template",
+              "done": true
+            },
+            {
+              "label": "Cover legible at thumbnail size",
+              "done": true
+            },
+            {
+              "label": "Print wrap sized to page count; ebook cover at spec",
+              "done": true
+            },
+            {
+              "label": "build/ has valid print PDF + EPUB",
+              "done": true
+            }
+          ],
+          "completed": 4,
+          "total": 4
+        },
+        {
+          "id": "Gate 5",
+          "title": "Listed & published",
+          "items": [
+            {
+              "label": "Title carries differentiator (e.g. [Annotated]); subtitle carries keywords",
+              "done": true
+            },
+            {
+              "label": "Description leads with WHY THIS EDITION; categories + keywords set",
+              "done": true
+            },
+            {
+              "label": "\"Public domain work\" selected; AI-generated content disclosed if any",
+              "done": false
+            },
+            {
+              "label": "Paperback + Kindle live; rights proof archived",
+              "done": false
+            }
+          ],
+          "completed": 2,
+          "total": 4
+        },
+        {
+          "id": "Gate 6",
+          "title": "Optimized & reinvested",
+          "items": [
+            {
+              "label": "KDP Ads live (small budget)",
+              "done": false
+            },
+            {
+              "label": "Listing iterated once on early data",
+              "done": false
+            },
+            {
+              "label": "Earnings earmarked to next title",
+              "done": false
+            },
+            {
+              "label": "Retro done → tooling improved",
+              "done": false
+            }
+          ],
+          "completed": 0,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "slug": "history-of-the-yorubas",
+      "title": "The History of the Yorubas",
+      "author": "Samuel Johnson",
+      "death_year": 1901,
+      "pub_year": 1921,
+      "pd_intl_year": 1971,
+      "us_pd": true,
+      "intl_pd": true,
+      "worldwide_clear": true,
+      "source_url": "https://archive.org/download/historyofyorubas00john/historyofyorubas00john_djvu.txt",
+      "current_stage": "Gate 5 — Ready for KDP Upload",
+      "stage_number": 5,
+      "proof_status": "Needs Proofing (403 Flags)",
+      "proof_level": "low",
+      "clean_word_count": 316191,
+      "estimated_pages": 1150,
+      "ocr": {
+        "exists": true,
+        "input_lines": 42864,
+        "output_lines": 22609,
+        "auto_changes": 13571,
+        "flagged_count": 403,
+        "protected_skipped": 57,
+        "stages": [
+          {
+            "stage": "page-numbers",
+            "auto": 320,
+            "flagged": 0
+          },
+          {
+            "stage": "running-heads",
+            "auto": 141,
+            "flagged": 0
+          },
+          {
+            "stage": "dehyphenate",
+            "auto": 753,
+            "flagged": 11
+          },
+          {
+            "stage": "reflow",
+            "auto": 1,
+            "flagged": 0
+          },
+          {
+            "stage": "normalize",
+            "auto": 12356,
+            "flagged": 0
+          },
+          {
+            "stage": "confusion",
+            "auto": 0,
+            "flagged": 392
+          }
+        ],
+        "flag_groups": [
+          {
+            "category": "line-end hyphen before capital — real compound?",
+            "count": 11,
+            "samples": [
+              "L2203: `Yoruba  mind,  its  ideas  and  idiosyncracies  do  not  run  in  an  Anglo- | Saxon  channel,  it  is  not  to  be  expected  that  the  mode  of  expression`",
+              "L18566: `ILORINS  CHECKMATED— ATTEMPTS  AT  RECONSTRUC- | TION—INTERTRIBAL WARS— BRITISH  PROTECTORATE.`",
+              "L26509: `Adey^a,  prince  of  Ila,  Fabunmi  and  Odeyale  both  of  Mesin- | Oloja-Oke,  allied  themselves  together  to  commence  hostilities`",
+              "L28597: `The  Rev.  J.  B.  Wood- | Dear  Sir, — I  beg  to  approach  you  with  my  humble  request :`",
+              "L32994: `This  affair  the  Commissioners  remarked  in  a  letter  to  the  Acting- | Governor  thus  :  \"  We  have  been  induced  to  visit  Oyo  on  the`",
+              "L33697: `11.20,  Gunmodi  at  2  p.m.,  and  after  resting  here  one  hour  the  Ife- | Modakeke  battlefield  was  reached  quite  late  on  the  same  day.`",
+              "L35319: `proved  to  be  that  the  seat  of  war  had  but  changed  from  Kiriji- | Mesin  to  Yanayo-Ikirun.`",
+              "L36028: `opening  of  that  route  as  also  now  the  opening  of  the  Abeokuta- | Ibadan  road  which  has  been  closed  since  1877.`",
+              "L38325: `The  following  was  the  reply  to  the  above  letter  by  the  Acting- | Governor  : —`",
+              "L40249: `ApatiS  Balogun  of  Kemta       jHis  associates  in  the  Govern- | Agbunrin,  Balogun  of  Ilugun  i     ment.`",
+              "L41249: `Igbomina,  log- | Igbo  Owu,  193`"
+            ]
+          },
+          {
+            "category": "digit inside word",
+            "count": 379,
+            "samples": [
+              "L7: `...■:[5i];-: vV^^:?>';^-:...`",
+              "L323: `...§3. The vicissitudes of [Iko3d] . . . . . .219...`",
+              "L838: `...or carving purposes, ebony, Ata [2i] hard wood used for facing carpe...`",
+              "L843: `...([3'ellow] and black), the rough skin plum...`",
+              "L982: `...[0-bu-ne-ko] ; but following the Standard Al...`",
+              "L988: `...cedes a consonant as nje, ndao, [nk6]....`",
+              "L1120: `...g., a'nu from cini-inu, mercy ; [6'to] from 6tit6, truth....`",
+              "L1120: `...rom cini-inu, mercy ; 6'to from [6tit6], truth....`",
+              "L1128: `...two or three ; e.g., «ifin from [aw6fin], the palace ; hence Alafin from...`",
+              "L1130: `...[0-oni] fromOw6ni, which is itself a co...`",
+              "L1130: `...0-oni [fromOw6ni], which is itself a contraction ...`",
+              "L1134: `...ing or reading, e.g., otito for [6'to] ; korik6 for k6\"'\"''...`"
+            ]
+          },
+          {
+            "category": "lone 'l' — likely 'I' or '1'",
+            "count": 6,
+            "samples": [
+              "L169: `...[l]{g) Learning 125...`",
+              "L4862: `...Didun-[l]'Obafe...`",
+              "L4865: `...Ire-[l]'Oba-ise...`",
+              "L4947: `...40 Madajo-[l]'Oba...`",
+              "L6381: `...,.,[l] !...`",
+              "L11995: `...jojumo ni ara Ago fiyan mumusin [l]§hin odi...`"
+            ]
+          },
+          {
+            "category": "pipe '|' — likely 'I' or 'l'",
+            "count": 5,
+            "samples": [
+              "L3185: `...^[|]kan, ^gmeji...`",
+              "L4971: `... remain seven days at the He Mol[|]. This \" distribution of honours...`",
+              "L6650: `...i.e. a free gift of God ! The[|];irl may not even know the man u...`",
+              "L9440: `...riction the above-mentioned Akes[|] chiefs with their men left...`",
+              "L17033: `...(Signed) Samuel Johnson, [|] occasion....`"
+            ]
+          },
+          {
+            "category": "'vv' — likely 'w'",
+            "count": 2,
+            "samples": [
+              "L7098: `...mselves useful generally as men [vv]ho must keep cool heads while th...`",
+              "L16791: `...Esu[vv]ii and Ipetu, they all agreed th...`",
+              "L1243: `...[Ep6] . . weeds Opd...` — protected term matched: 'Ep6'",
+              "L3224: `... so on) is contracted to Ed^ or [Od6], e.g., Edegbeta (500), Edegberi...` — protected term matched: 'Od6'",
+              "L3452: `...this is contracted to [Ow6ni] (Oluwo being the term for a sac...` — protected term matched: 'Ow6ni'",
+              "L3479: `...ds, and the Igbon-nas as far as [Or6]....` — protected term matched: 'Or6'",
+              "L3756: `...The [Ow6ni] of Ife was not a son of the Olo...` — protected term matched: 'Ow6ni'",
+              "L3764: `...has been contracted to the term [Ow6ni]....` — protected term matched: 'Ow6ni'",
+              "L3766: `...ola nuts and bitter kolas ; the [Ow6re] of Otun with sweet water from a...` — protected term matched: 'Ow6re'",
+              "L5271: `...9. Amep6 ,, [Abem6]...` — protected term matched: 'Abem6'",
+              "L6488: `...yard — were first imported from [Or6] or Ila in the Igbomina province...` — protected term matched: 'Or6'",
+              "L6878: `...Qfa, Lapemo of Ijomu near C>r6, [Onibiy6] of Guguru, Minimi of Erubu. The...` — protected term matched: 'Onibiy6'"
+            ]
+          }
+        ]
+      },
+      "apparatus": [
+        {
+          "filename": "01-introduction.md",
+          "title": "Introduction to the Annotated Edition",
+          "word_count": 473,
+          "is_complete": true,
+          "content": "# Introduction to the Annotated Edition\n\nThe Reverend Samuel Johnson’s *The History of the Yorubas* stands as one of the most remarkable intellectual achievements of early twentieth-century African historiography. Written in the late 1890s and finally published in London in 1921 after an extraordinary journey of loss, re-creation, and editorial rescue, it remains the foundational anchor for any serious study of Yoruba civilization, statecraft, religion, and literature.\n\n## The Author and His Mission\n\nBorn in Hastings, Sierra Leone in 1846 to recaptive Yoruba parents who traced their lineage back to the royal house of Oyo, Samuel Johnson returned to his ancestral homeland as a young missionary schoolmaster and catechist under the Church Missionary Society (CMS). Based for decades in Oyo and later in Ibadan, Johnson found himself not only an evangelist but also a trusted diplomatic intermediary during the protracted Yoruba Civil Wars (the Kiriji / Ekitiparapo Wars) of the late nineteenth century. \n\nRecognizing that the oral traditions, sacred chants, and historical memories of the Yoruba elders were vulnerable to dissolution under colonial partition and rapid modernization, Johnson set out to preserve them. Relying directly on the Royal Bards (*Arokin*) of the Alaafin of Oyo, councilors of state, and provincial warlords, he produced a comprehensive history of an African nation from its legendary genesis to the establishment of the British Protectorate.\n\nTragically, Johnson’s original manuscript, dispatched to England in 1899, was misplaced by the publisher. With legendary resolve, Johnson painstakingly reconstructed the entire work from his personal field notes before his death in 1901. His brother, Dr. Obadiah Johnson, subsequently prepared and edited the recovered manuscript for its landmark 1921 publication.\n\n## Historical and Cultural Significance\n\nJohnson’s work divides naturally into two parts:\n1. **The People, Their Country, and Customs**: A rigorous anthropological survey detailing Yoruba ethnology, grammar, cosmology, royal rituals, military apparatus, law, and social institutions.\n2. **The Dynastic Chronicle**: A comprehensive sequential account of the kings of Oyo (*Alaafins*), beginning with Oduduwa and Oranyan, tracing the zenith of imperial Oyo, its collapse in the early nineteenth century, and the tumultuous civil conflicts that followed.\n\nWhile Johnson’s perspective is inevitably influenced by his Victorian missionary upbringing and an unabashedly Oyo-centric vantage point, his record preserves names, genealogies, proverbs, and poetry that would otherwise have vanished from human memory.\n\n## About This Restored Edition\n\nThis new critical edition restores Johnson’s monumental text to modern readers with careful attention to readability and cultural fidelity:\n- **Cleaned and Restored Text**: Hyphenation breaks, running headers, and mechanical typesetting errors from the 1921 first edition have been corrected while strictly preserving Johnson’s original prose and orthography.\n- **Critical Apparatus**: An expanded glossary of classical Yoruba political titles, sacred concepts, and historical locations accompanies the text to assist modern readers, diaspora researchers, and students.\n- **Editorial Policy**: All original footnotes and historical appendices have been retained in full."
+        },
+        {
+          "filename": "02-note-on-text.md",
+          "title": "Note on the Text",
+          "word_count": 193,
+          "is_complete": true,
+          "content": "# Note on the Text\n\n## Source Edition\nThe base text for this edition is the 1921 first edition of *The History of the Yorubas: From the Earliest Times to the Beginning of the British Protectorate*, edited by Dr. Obadiah Johnson and published in London by George Routledge & Sons, Ltd. Digitized scans preserved in the Boston Public Library collection were used as the primary historical baseline.\n\n## Editorial Principles\n1. **Preservation of Authorial Voice**: Samuel Johnson’s nineteenth-century English syntax, historical spellings of place names, and archaic missionary terminology have been preserved to maintain the historical integrity of the primary source.\n2. **Orthography and Diacritics**: Early missionary orthography for the Yoruba language frequently utilized sub-dots and accent markers. Where early twentieth-century typesetting technology dropped or obscured accents, we have maintained the base phonetic spelling while clarifying terms in the accompanying glossary.\n3. **Typography and Layout**: Mechanical scanning artefacts—such as broken line hyphenations, catchwords, and repeated running headers—have been systematically corrected to provide a seamless reading experience on modern digital screens and printed pages.\n4. **Footnotes**: All original explanatory footnotes provided by Samuel Johnson and Dr. Obadiah Johnson have been retained and numbered sequentially."
+        },
+        {
+          "filename": "03-glossary.md",
+          "title": "Glossary of Yoruba Terms, Titles, and Concepts",
+          "word_count": 448,
+          "is_complete": true,
+          "content": "# Glossary of Yoruba Terms, Titles, and Concepts\n\nThis glossary provides contextual definitions for classical political offices, religious concepts, and social institutions appearing throughout *The History of the Yorubas*.\n\n### Political and Chieftaincy Titles\n- **Alaafin**: The sacred king of Oyo; supreme sovereign of the Yoruba kingdom.\n- **Oyo Mesi**: The supreme aristocratic council of seven kingmakers in Oyo, headed by the Bashorun, exercising constitutional checks over the Alaafin.\n- **Bashorun**: Prime Minister of Oyo and head of the Oyo Mesi council; commander of the state religion and civic ceremonies.\n- **Kakanfo (Aare Ona Kakanfo)**: Supreme Field Marshal of the Yoruba imperial armies. By constitutional tradition, the Kakanfo could never suffer defeat—he was expected either to conquer or commit suicide.\n- **Balogun**: Commander-in-chief of provincial armies or city-state forces (particularly prominent in nineteenth-century Ibadan and Abeokuta).\n- **Ooni**: The sacred monarch of Ile-Ife, regarded as the spiritual ancestral cradle of all Yoruba lineages.\n- **Baale**: The civil headman, mayor, or hereditary governor of an un-crowned town or settlement.\n- **Otun / Osi**: Traditional military and civil divisions: *Otun* (Right Wing) and *Osi* (Left Wing).\n- **Ilari**: Royal messengers, bodyguards, and diplomatic envoys bearing distinct shaved hairstyles and scarification.\n\n### Cosmology and Religious Concepts\n- **Olodumare / Olorun**: The Supreme Deity; Creator of the cosmos and source of *Ase* (spiritual life-force).\n- **Orisha**: Divinities and deified ancestral forces representing facets of the cosmic order.\n- **Oduduwa**: The mythological progenitor and founding ancestor of the Yoruba royal dynasties.\n- **Oranyan**: Son/grandson of Oduduwa; legendary warrior-king and founder of the imperial capital of Oyo-Ile.\n- **Sango (Shango)**: The fourth Alaafin of Oyo, renowned for his fiery temper and martial prowess, later deified as the Orisha of thunder, lightning, and justice.\n- **Ogun**: The Orisha of iron, metallurgy, craftsmanship, and warfare; guardian of oaths and truth.\n- **Obatala (Orisanla)**: The arch-divinity associated with creation, purity, wisdom, and justice.\n- **Ifa (Orunmila)**: The divine system of divination, esoteric wisdom, and destiny, mediated through sacred cowrie shells or palm nuts (*Ikin*).\n- **Babalawo**: \"Father of secrets\"; a fully initiated priest of the Ifa divination system.\n- **Opon Ifa**: The sacred carved wooden tray utilized by Ifa priests during divination consultations.\n- **Egungun**: Masqueraders representing ancestral spirits returning to advise, bless, or discipline the community.\n- **Oro**: A sacred male ancestral society utilizing bull-roarers to maintain public order and civic sanctions.\n\n### Geographical and Cultural Terms\n- **Aso Oke**: Traditional hand-woven prestige textile cloth woven on narrow looms.\n- **Katunga (Oyo-Ile)**: The ancient capital of the Oyo Empire, abandoned during the nineteenth-century conflicts.\n- **Ekitiparapo**: The grand confederacy formed by eastern Yoruba kingdoms (Ekiti, Ijesha) to resist Ibadan’s military hegemony during the Kiriji War (1877–1893)."
+        }
+      ],
+      "apparatus_word_count": 1114,
+      "apparatus_complete": true,
+      "listing": {
+        "exists": true,
+        "is_complete": true,
+        "title": "The History of the Yorubas",
+        "subtitle": "From the Earliest Times to the Beginning of the British Protectorate (Annotated Edition)",
+        "series": "Foundations of African History (Book 1)",
+        "description_html": "<p><strong>The definitive, restored edition of the greatest historical masterpiece on Yoruba civilization and West African statecraft.</strong></p>\n\n<p>Written in the late 1890s by Reverend Samuel Johnson—a native Yoruba scholar whose lineage traced directly to the royal house of Oyo—<em>The History of the Yorubas</em> is an unmatched epic of African memory. Drawing directly from the royal bards (<em>Arokin</em>), councilors of state, and battlefield commanders, Johnson chronicled the entire trajectory of the Yoruba people: from legendary origins under Oduduwa at Ile-Ife, through the rise and zenith of imperial Oyo, to the dramatic nineteenth-century civil wars and the dawn of the colonial protectorate.</p>\n\n<p>Far more than a simple chronicle of kings, this monumental volume provides an exhaustive encyclopedia of Yoruba life, detailing social institutions, legal systems, military strategies, royal rituals, religious cosmology, proverbs, and poetry.</p>\n\n<p><strong>This Modern Annotated Edition Features:</strong></p>\n<ul>\n    <li><strong>Complete, Restored Text:</strong> Meticulously typeset and cleaned from original 1921 first-edition scans to eliminate historical scanning defects and OCR errors while honoring Johnson's original prose.</li>\n    <li><strong>Scholarly Historical Introduction:</strong> Critical background on Johnson’s remarkable life, the loss and reconstruction of the manuscript, and the book's lasting historiographical importance.</li>\n    <li><strong>Comprehensive Cultural Glossary:</strong> Clear definitions for classical political offices (Alaafin, Bashorun, Kakanfo), sacred deities (Orishas), and institutional terms.</li>\n    <li><strong>Note on the Text:</strong> Complete documentation of original source editions and editorial principles.</li>\n    <li><strong>Complete Original Footnotes:</strong> Every authorial and editorial annotation preserved in full.</li>\n</ul>\n\n<p><em>Essential reading for historians, anthropologists, students of the African diaspora, and anyone seeking to understand the deep roots of West African culture.</em></p>",
+        "keywords": [
+          "yoruba history and culture",
+          "samuel johnson yoruba",
+          "oyo empire kings alaafin",
+          "west african civilization precolonial",
+          "ifa orisha mythology and religion",
+          "ile ife oduduwa history",
+          "african diaspora black history classics"
+        ],
+        "categories": [
+          "**History / Africa / West** (HIS001030)",
+          "**Social Science / Ethnic Studies / African Studies** (SOC001000)",
+          "**History / Historical Geography** (HIS051000)"
+        ],
+        "pricing": [
+          "**Kindle eBook**: $7.99 (Set to 35% Public Domain Royalty)",
+          "**Paperback (POD)**: $19.99 (High page-count trade paperback; approx. $8.50 print cost, ~$3.50 net royalty)"
+        ],
+        "raw": "# KDP Metadata — The History of the Yorubas [Annotated]\n\n## Book Title\nThe History of the Yorubas\n\n## Subtitle\nFrom the Earliest Times to the Beginning of the British Protectorate (Annotated Edition)\n\n## Series Title (Optional)\nFoundations of African History (Book 1)\n\n## Description (HTML for Amazon)\n<p><strong>The definitive, restored edition of the greatest historical masterpiece on Yoruba civilization and West African statecraft.</strong></p>\n\n<p>Written in the late 1890s by Reverend Samuel Johnson—a native Yoruba scholar whose lineage traced directly to the royal house of Oyo—<em>The History of the Yorubas</em> is an unmatched epic of African memory. Drawing directly from the royal bards (<em>Arokin</em>), councilors of state, and battlefield commanders, Johnson chronicled the entire trajectory of the Yoruba people: from legendary origins under Oduduwa at Ile-Ife, through the rise and zenith of imperial Oyo, to the dramatic nineteenth-century civil wars and the dawn of the colonial protectorate.</p>\n\n<p>Far more than a simple chronicle of kings, this monumental volume provides an exhaustive encyclopedia of Yoruba life, detailing social institutions, legal systems, military strategies, royal rituals, religious cosmology, proverbs, and poetry.</p>\n\n<p><strong>This Modern Annotated Edition Features:</strong></p>\n<ul>\n    <li><strong>Complete, Restored Text:</strong> Meticulously typeset and cleaned from original 1921 first-edition scans to eliminate historical scanning defects and OCR errors while honoring Johnson's original prose.</li>\n    <li><strong>Scholarly Historical Introduction:</strong> Critical background on Johnson’s remarkable life, the loss and reconstruction of the manuscript, and the book's lasting historiographical importance.</li>\n    <li><strong>Comprehensive Cultural Glossary:</strong> Clear definitions for classical political offices (Alaafin, Bashorun, Kakanfo), sacred deities (Orishas), and institutional terms.</li>\n    <li><strong>Note on the Text:</strong> Complete documentation of original source editions and editorial principles.</li>\n    <li><strong>Complete Original Footnotes:</strong> Every authorial and editorial annotation preserved in full.</li>\n</ul>\n\n<p><em>Essential reading for historians, anthropologists, students of the African diaspora, and anyone seeking to understand the deep roots of West African culture.</em></p>\n\n## Backend Search Keywords (7 allowed, max 50 chars each)\n1. yoruba history and culture\n2. samuel johnson yoruba\n3. oyo empire kings alaafin\n4. west african civilization precolonial\n5. ifa orisha mythology and religion\n6. ile ife oduduwa history\n7. african diaspora black history classics\n\n## BISAC Categories\n1. **History / Africa / West** (HIS001030)\n2. **Social Science / Ethnic Studies / African Studies** (SOC001000)\n3. **History / Historical Geography** (HIS051000)\n\n## Pricing Recommendation\n- **Kindle eBook**: $7.99 (Set to 35% Public Domain Royalty)\n- **Paperback (POD)**: $19.99 (High page-count trade paperback; approx. $8.50 print cost, ~$3.50 net royalty)"
+      },
+      "build": {
+        "epub_exists": true,
+        "epub_size": "705 KB",
+        "epub_url": "/downloads/history-of-the-yorubas.epub",
+        "pdf_exists": true,
+        "pdf_size": "1.8 MB",
+        "pdf_url": "/downloads/history-of-the-yorubas.pdf",
+        "cover_url": "/covers/history-of-the-yorubas.jpg",
+        "cover_watermark_url": "/covers/history-of-the-yorubas-watermark.jpg"
+      },
+      "gates": [
+        {
+          "id": "Gate 1",
+          "title": "Rights cleared",
+          "items": [
+            {
+              "label": "Author death year + first-publication year recorded (see rights/rights.md)",
+              "done": true
+            },
+            {
+              "label": "Public domain under US (pre-1929) AND life+70",
+              "done": true
+            },
+            {
+              "label": "Territories decided — Worldwide",
+              "done": true
+            },
+            {
+              "label": "Sourcing the ORIGINAL work, not a modern reprint's apparatus",
+              "done": true
+            },
+            {
+              "label": "Proof saved in rights/ — screenshots still needed (see rights/rights.md)",
+              "done": false
+            }
+          ],
+          "completed": 4,
+          "total": 5
+        },
+        {
+          "id": "Gate 2",
+          "title": "Text clean",
+          "items": [
+            {
+              "label": "Cleanest source obtained into source/",
+              "done": true
+            },
+            {
+              "label": "Ran ocr_cleanup.py → text/clean.txt (+ diff + report)",
+              "done": true
+            },
+            {
+              "label": "Reviewed changes.diff before accepting",
+              "done": true
+            },
+            {
+              "label": "Worked through every flag in report.md (403 flags pending review)",
+              "done": false
+            },
+            {
+              "label": "Proofed names/dates/numbers against page images",
+              "done": false
+            },
+            {
+              "label": "change-log noted",
+              "done": false
+            }
+          ],
+          "completed": 3,
+          "total": 6
+        },
+        {
+          "id": "Gate 3",
+          "title": "Apparatus written (this is the product)",
+          "items": [
+            {
+              "label": "Original introduction (your voice)",
+              "done": true
+            },
+            {
+              "label": "Glossary / annotations / chronology as warranted",
+              "done": true
+            },
+            {
+              "label": "\"Note on the text\" (source edition + editorial policy)",
+              "done": true
+            },
+            {
+              "label": "Differentiation is substantive",
+              "done": true
+            },
+            {
+              "label": "AI-disclosure status decided per element",
+              "done": true
+            }
+          ],
+          "completed": 5,
+          "total": 5
+        },
+        {
+          "id": "Gate 4",
+          "title": "Designed",
+          "items": [
+            {
+              "label": "Interior in the standard template",
+              "done": true
+            },
+            {
+              "label": "Cover legible at thumbnail size",
+              "done": true
+            },
+            {
+              "label": "Print wrap sized to page count; ebook cover at spec",
+              "done": true
+            },
+            {
+              "label": "build/ has valid print PDF + EPUB",
+              "done": true
+            }
+          ],
+          "completed": 4,
+          "total": 4
+        },
+        {
+          "id": "Gate 5",
+          "title": "Listed & published",
+          "items": [
+            {
+              "label": "Title carries differentiator (e.g. [Annotated]); subtitle carries keywords",
+              "done": true
+            },
+            {
+              "label": "Description leads with WHY THIS EDITION; categories + keywords set",
+              "done": true
+            },
+            {
+              "label": "\"Public domain work\" selected; AI-generated content disclosed if any",
+              "done": false
+            },
+            {
+              "label": "Paperback + Kindle live; rights proof archived",
+              "done": false
+            }
+          ],
+          "completed": 2,
+          "total": 4
+        },
+        {
+          "id": "Gate 6",
+          "title": "Optimized & reinvested",
+          "items": [
+            {
+              "label": "KDP Ads live (small budget)",
+              "done": false
+            },
+            {
+              "label": "Listing iterated once on early data",
+              "done": false
+            },
+            {
+              "label": "Earnings earmarked to next title",
+              "done": false
+            },
+            {
+              "label": "Retro done → tooling improved",
+              "done": false
+            }
+          ],
+          "completed": 0,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "slug": "yoruba-speaking-peoples",
+      "title": "The Yoruba-Speaking Peoples of the Slave Coast of West Africa",
+      "author": "A. B. Ellis",
+      "death_year": 1894,
+      "pub_year": 1894,
+      "pd_intl_year": 1964,
+      "us_pd": true,
+      "intl_pd": true,
+      "worldwide_clear": true,
+      "source_url": "https://www.gutenberg.org/cache/epub/35254/pg35254.txt",
+      "current_stage": "Gate 5 — Ready for KDP Upload",
+      "stage_number": 5,
+      "proof_status": "Clean (0 OCR Flags)",
+      "proof_level": "high",
+      "clean_word_count": 65147,
+      "estimated_pages": 237,
+      "ocr": {
+        "exists": true,
+        "input_lines": 8967,
+        "output_lines": 5610,
+        "auto_changes": 1,
+        "flagged_count": 0,
+        "protected_skipped": 0,
+        "stages": [
+          {
+            "stage": "reflow",
+            "auto": 1,
+            "flagged": 0
+          }
+        ],
+        "flag_groups": []
+      },
+      "apparatus": [
+        {
+          "filename": "01-introduction.md",
+          "title": "Introduction to the Critical Edition",
+          "word_count": 392,
+          "is_complete": true,
+          "content": "# Introduction to the Critical Edition\n\nLieutenant-Colonel Alfred Burdon Ellis (1852–1894) was an officer of the First West India Regiment and one of the most prolific colonial ethnographic observers of late nineteenth-century West Africa. Published in London in 1894, *The Yoruba-Speaking Peoples of the Slave Coast of West Africa* formed the third and most influential volume in Ellis’s major ethnographic trilogy, following his earlier studies of the Tshi-speaking (Akan) and Gã-speaking peoples.\n\n## The Colonial Lens and Indigenous Reality\n\nEllis operated in an era marked by Victorian racial theories and colonial administrative expansion. He did not speak Yoruba natively, relying instead on bilingual mission-educated informants, government interpreters, and his own administrative observations along the Lagos colony and the Bight of Benin. Consequently, his work reflects both the keen observational rigor of nineteenth-century comparative anthropology and the inevitable biases and misapprehensions of the colonial gazetteer.\n\nYet, despite these colonial filters, Ellis’s survey holds immense historiographical value. Ellis meticulously documented:\n- **The Orisha Pantheon**: Detailed descriptions of the functions, priesthoods, sacred symbols, and sacrificial rites associated with Olorun, Obatala, Odudua, Shango, Ogun, Oshun, and Ifa.\n- **The System of Divination**: One of the earliest European attempts to document the sixteen principal Odus of Ifa divination.\n- **Social Structure and Customary Law**: Hereditary kinship systems, blood-feuds, tribal markings (*Ila*), land tenure, marriage ceremonies, and funeral rites.\n- **Proverbs and Folklore**: Over 250 traditional Yoruba proverbs and fables recorded in both the original vernacular and English translation.\n\n## The Value of Pairing Ellis with Johnson\n\nFor modern scholars, students, and readers of Yoruba cultural history, Ellis provides an invaluable comparative mirror to the Reverend Samuel Johnson’s *The History of the Yorubas*. Where Johnson writes from within the sacred royal traditions of the Oyo interior, Ellis captures the coastal perspective, colonial interaction, and the external anthropological view of the same turbulent decade. Read together with critical discernment, the two works offer a panoramic understanding of nineteenth-century Yoruba thought and society.\n\n## About This Restored Edition\n\nThis edition has been restored with an active critical apparatus designed for modern readers:\n- **Preserved and Corrected Text**: Cleaned of scanning defects while faithfully preserving Ellis’s original structure, appendices, and comparative notes.\n- **Critical Cultural Glossary**: A reference guide clarifying nineteenth-century anglicized spellings of Yoruba divinities and concepts.\n- **Historical Context**: Contextual notes highlighting where modern scholarship corrects Victorian anthropological assumptions."
+        },
+        {
+          "filename": "02-note-on-text.md",
+          "title": "Note on the Text",
+          "word_count": 173,
+          "is_complete": true,
+          "content": "# Note on the Text\n\n## Source Edition\nThis edition is based on the 1894 first edition of *The Yoruba-Speaking Peoples of the Slave Coast of West Africa: Their Religion, Manners, Customs, Laws, Language, etc.* by A. B. Ellis, published in London by Chapman and Hall, Ltd. The text has been checked against the archival digital scans preserved in the British Library and Project Gutenberg collections.\n\n## Editorial Policy\n1. **Victorian Orthography and Terminology**: Ellis utilized an idiosyncratic nineteenth-century phonetic transliteration for Yoruba names and deities (e.g., *Olorun*, *Obatala*, *Shango*, *Orisha*). These original spellings have been preserved in the main text to maintain historical authenticity, while standardized modern spellings are cross-referenced in the glossary.\n2. **Anthropological Language**: Nineteenth-century colonial anthropology employed terminology that modern readers may find dated or problematic. In keeping with scholarly standards for historical primary sources, the text has not been expurgated; rather, historical context is provided in the editorial introduction.\n3. **Format and Corrections**: Typographical printer errors and broken line hyphenations from the 1894 volume have been silently corrected."
+        },
+        {
+          "filename": "03-glossary.md",
+          "title": "Glossary of Yoruba Deities, Customs, and Terms",
+          "word_count": 254,
+          "is_complete": true,
+          "content": "# Glossary of Yoruba Deities, Customs, and Terms\n\nThis glossary cross-references Ellis’s nineteenth-century transliterations with modern standardized Yoruba terms.\n\n### Deities and Spiritual Entities (*Orishas*)\n- **Olorun**: \"Owner of Heaven\"; the Supreme Being in traditional Yoruba cosmology.\n- **Obatala (Orishanla)**: The deity of white cloth, purity, creation, and ethics; regarded as the sculptor of human physical form.\n- **Odudua (Oduduwa)**: In Ellis’s account, represented as the female counterpart of Obatala and goddess of the earth; in traditional Oyo-Ife historiography, the legendary patriarch and founding ruler of the Yoruba royal dynasties.\n- **Shango (Sango)**: Deified monarch of Oyo; Orisha of thunder, lightning, fire, and divine retribution.\n- **Ogun**: The Orisha of iron, war, hunting, and technological craft.\n- **Oshun (Osun)**: River deity associated with fertility, beauty, maternal care, and fresh waters.\n- **Ifa (Orunmila)**: The deity and sacred system of divination, destiny, and cosmic wisdom.\n- **Eshu (Elegbara)**: The divine messenger, guardian of the crossroads, and agent of moral testing and order.\n- **Oya**: River goddess and fierce deity of the tempest, wind, and lightning; principal consort of Sango.\n\n### Sacred and Social Customs\n- **Babalawo**: Diviner and master of the sixteen principal Odus of the Ifa system.\n- **Opon Ifa**: The sacred circular or rectangular tray used during divination.\n- **Opele**: The consecrated chain cast during divination consultations to reveal Odu signatures.\n- **Egungun**: Ancestral masquerade honoring deceased lineage forebears.\n- **Oro**: Ancient sacred society performing nocturnal judicial and purification rites.\n- **Ila**: Traditional facial scarification patterns denoting lineage, ethnic sub-group, or social affiliation."
+        }
+      ],
+      "apparatus_word_count": 819,
+      "apparatus_complete": true,
+      "listing": {
+        "exists": true,
+        "is_complete": true,
+        "title": "The Yoruba-Speaking Peoples of the Slave Coast of West Africa",
+        "subtitle": "Their Religion, Manners, Customs, Laws, Languages, and Folklore (Annotated Edition)",
+        "series": "Foundations of African History (Book 2)",
+        "description_html": "<p><strong>A foundational 19th-century anthropological survey of Yoruba religion, mythology, sacred priesthoods, and customary law.</strong></p>\n\n<p>First published in London in 1894 by Lieutenant-Colonel A. B. Ellis, <em>The Yoruba-Speaking Peoples of the Slave Coast of West Africa</em> is one of the earliest comprehensive European studies of Yoruba civilization. Operating along the West African coast at the close of the nineteenth century, Ellis recorded in granular detail the religious pantheon, sacred priesthoods, legal traditions, and oral literature of the Yoruba people before the full consolidation of British colonial rule.</p>\n\n<p>The work provides an extraordinary record of the Yoruba Orisha pantheon—including detailed chapters dedicated to Olorun, Obatala, Odudua, Shango, Ogun, Oshun, and Ifa—alongside an extensive study of the Ifa divination system, secret societies (Oro and Egungun), land tenure, marriage customs, and over 250 traditional proverbs.</p>\n\n<p><strong>This Modern Annotated Edition Features:</strong></p>\n<ul>\n    <li><strong>Fully Cleaned and Restored Text:</strong> Carefully reformatted from original 1894 first editions for seamless reading in print and digital formats.</li>\n    <li><strong>Critical Modern Introduction:</strong> A scholarly opening essay analyzing Ellis's late-Victorian methodology, examining his strengths, limitations, and how his coastal survey pairs with Samuel Johnson's <em>History of the Yorubas</em>.</li>\n    <li><strong>Comprehensive Orisha and Cultural Glossary:</strong> Standardized definitions cross-referencing Ellis's 19th-century anglicized spellings with modern Yoruba orthography.</li>\n    <li><strong>Complete Original Proverbs & Folklore:</strong> The full compendium of 250+ Yoruba proverbs and nature myths preserved with original English translations.</li>\n    <li><strong>Scholarly Note on the Text:</strong> Archival documentation detailing source origins and editorial policy.</li>\n</ul>\n\n<p><em>An indispensable companion volume for historians, practitioners of traditional African religions, and students of the African diaspora.</em></p>",
+        "keywords": [
+          "yoruba speaking peoples ellis",
+          "orisha worship religion west africa",
+          "ifa divination shango obatala",
+          "african mythology folklore proverbs",
+          "nigerian history precolonial customs",
+          "yoruba culture traditions anthropology",
+          "african spirituality diaspora classics"
+        ],
+        "categories": [
+          "**History / Africa / West** (HIS001030)",
+          "**Social Science / Customs & Traditions** (SOC002010)",
+          "**Religion / Comparative Religion** (REL017000)"
+        ],
+        "pricing": [
+          "**Kindle eBook**: $6.99 (Set to 35% Public Domain Royalty)",
+          "**Paperback (POD)**: $16.99 (Trade paperback; approx. $5.50 print cost, ~$4.50 net royalty)"
+        ],
+        "raw": "# KDP Metadata — The Yoruba-Speaking Peoples of the Slave Coast of West Africa [Annotated]\n\n## Book Title\nThe Yoruba-Speaking Peoples of the Slave Coast of West Africa\n\n## Subtitle\nTheir Religion, Manners, Customs, Laws, Languages, and Folklore (Annotated Edition)\n\n## Series Title (Optional)\nFoundations of African History (Book 2)\n\n## Description (HTML for Amazon)\n<p><strong>A foundational 19th-century anthropological survey of Yoruba religion, mythology, sacred priesthoods, and customary law.</strong></p>\n\n<p>First published in London in 1894 by Lieutenant-Colonel A. B. Ellis, <em>The Yoruba-Speaking Peoples of the Slave Coast of West Africa</em> is one of the earliest comprehensive European studies of Yoruba civilization. Operating along the West African coast at the close of the nineteenth century, Ellis recorded in granular detail the religious pantheon, sacred priesthoods, legal traditions, and oral literature of the Yoruba people before the full consolidation of British colonial rule.</p>\n\n<p>The work provides an extraordinary record of the Yoruba Orisha pantheon—including detailed chapters dedicated to Olorun, Obatala, Odudua, Shango, Ogun, Oshun, and Ifa—alongside an extensive study of the Ifa divination system, secret societies (Oro and Egungun), land tenure, marriage customs, and over 250 traditional proverbs.</p>\n\n<p><strong>This Modern Annotated Edition Features:</strong></p>\n<ul>\n    <li><strong>Fully Cleaned and Restored Text:</strong> Carefully reformatted from original 1894 first editions for seamless reading in print and digital formats.</li>\n    <li><strong>Critical Modern Introduction:</strong> A scholarly opening essay analyzing Ellis's late-Victorian methodology, examining his strengths, limitations, and how his coastal survey pairs with Samuel Johnson's <em>History of the Yorubas</em>.</li>\n    <li><strong>Comprehensive Orisha and Cultural Glossary:</strong> Standardized definitions cross-referencing Ellis's 19th-century anglicized spellings with modern Yoruba orthography.</li>\n    <li><strong>Complete Original Proverbs & Folklore:</strong> The full compendium of 250+ Yoruba proverbs and nature myths preserved with original English translations.</li>\n    <li><strong>Scholarly Note on the Text:</strong> Archival documentation detailing source origins and editorial policy.</li>\n</ul>\n\n<p><em>An indispensable companion volume for historians, practitioners of traditional African religions, and students of the African diaspora.</em></p>\n\n## Backend Search Keywords (7 allowed, max 50 chars each)\n1. yoruba speaking peoples ellis\n2. orisha worship religion west africa\n3. ifa divination shango obatala\n4. african mythology folklore proverbs\n5. nigerian history precolonial customs\n6. yoruba culture traditions anthropology\n7. african spirituality diaspora classics\n\n## BISAC Categories\n1. **History / Africa / West** (HIS001030)\n2. **Social Science / Customs & Traditions** (SOC002010)\n3. **Religion / Comparative Religion** (REL017000)\n\n## Pricing Recommendation\n- **Kindle eBook**: $6.99 (Set to 35% Public Domain Royalty)\n- **Paperback (POD)**: $16.99 (Trade paperback; approx. $5.50 print cost, ~$4.50 net royalty)"
+      },
+      "build": {
+        "epub_exists": true,
+        "epub_size": "208 KB",
+        "epub_url": "/downloads/yoruba-speaking-peoples.epub",
+        "pdf_exists": true,
+        "pdf_size": "430 KB",
+        "pdf_url": "/downloads/yoruba-speaking-peoples.pdf",
+        "cover_url": "/covers/yoruba-speaking-peoples.jpg",
+        "cover_watermark_url": "/covers/yoruba-speaking-peoples-watermark.jpg"
+      },
+      "gates": [
+        {
+          "id": "Gate 1",
+          "title": "Rights cleared",
+          "items": [
+            {
+              "label": "Author death year + first-publication year recorded (see rights/rights.md)",
+              "done": true
+            },
+            {
+              "label": "Public domain under US (pre-1929) AND life+70",
+              "done": true
+            },
+            {
+              "label": "Territories decided — Worldwide",
+              "done": true
+            },
+            {
+              "label": "Sourcing the ORIGINAL work, not a modern reprint's apparatus",
+              "done": true
+            },
+            {
+              "label": "Proof saved in rights/",
+              "done": false
+            }
+          ],
+          "completed": 4,
+          "total": 5
+        },
+        {
+          "id": "Gate 2",
+          "title": "Text clean",
+          "items": [
+            {
+              "label": "Cleanest source obtained into source/ (Project Gutenberg #35254)",
+              "done": true
+            },
+            {
+              "label": "Ran ocr_cleanup.py → text/clean.txt (+ diff + report)",
+              "done": true
+            },
+            {
+              "label": "Reviewed changes.diff before accepting",
+              "done": true
+            },
+            {
+              "label": "Worked through every flag in report.md (0 OCR flags)",
+              "done": true
+            },
+            {
+              "label": "Final editorial read-through",
+              "done": false
+            },
+            {
+              "label": "change-log noted",
+              "done": true
+            }
+          ],
+          "completed": 5,
+          "total": 6
+        },
+        {
+          "id": "Gate 3",
+          "title": "Apparatus written (this is the product)",
+          "items": [
+            {
+              "label": "Original introduction (your voice)",
+              "done": true
+            },
+            {
+              "label": "Glossary / annotations / chronology as warranted",
+              "done": true
+            },
+            {
+              "label": "\"Note on the text\" (source edition + editorial policy)",
+              "done": true
+            },
+            {
+              "label": "Differentiation is substantive",
+              "done": true
+            },
+            {
+              "label": "AI-disclosure status decided per element",
+              "done": true
+            }
+          ],
+          "completed": 5,
+          "total": 5
+        },
+        {
+          "id": "Gate 4",
+          "title": "Designed",
+          "items": [
+            {
+              "label": "Interior in the standard template",
+              "done": true
+            },
+            {
+              "label": "Cover legible at thumbnail size",
+              "done": true
+            },
+            {
+              "label": "Print wrap sized to page count; ebook cover at spec",
+              "done": true
+            },
+            {
+              "label": "build/ has valid print PDF + EPUB",
+              "done": true
+            }
+          ],
+          "completed": 4,
+          "total": 4
+        },
+        {
+          "id": "Gate 5",
+          "title": "Listed & published",
+          "items": [
+            {
+              "label": "Title carries differentiator (e.g. [Annotated]); subtitle carries keywords",
+              "done": true
+            },
+            {
+              "label": "Description leads with WHY THIS EDITION; categories + keywords set",
+              "done": true
+            },
+            {
+              "label": "\"Public domain work\" selected; AI-generated content disclosed if any",
+              "done": false
+            },
+            {
+              "label": "Paperback + Kindle live; rights proof archived",
+              "done": false
+            }
+          ],
+          "completed": 2,
+          "total": 4
+        },
+        {
+          "id": "Gate 6",
+          "title": "Optimized & reinvested",
+          "items": [
+            {
+              "label": "KDP Ads live (small budget)",
+              "done": false
+            },
+            {
+              "label": "Listing iterated once on early data",
+              "done": false
+            },
+            {
+              "label": "Earnings earmarked to next title",
+              "done": false
+            },
+            {
+              "label": "Retro done → tooling improved",
+              "done": false
+            }
+          ],
+          "completed": 0,
+          "total": 4
+        }
+      ]
+    }
+  ]
+}

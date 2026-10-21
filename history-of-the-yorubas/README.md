@@ -5,36 +5,36 @@ Author: Samuel Johnson (d. 1901) · First published: 1921 · Slug: `history-of-t
 Move through the gates in order. A gate is done only when every box is ticked.
 
 ## Gate 1 — Rights cleared
-- [ ] Author death year + first-publication year recorded (see rights/rights.md)
-- [ ] Public domain under US (pre-1929) AND life+70
-- [ ] Territories decided
-- [ ] Sourcing the ORIGINAL work, not a modern reprint's apparatus
-- [ ] Proof saved in rights/
+- [x] Author death year + first-publication year recorded (see rights/rights.md)
+- [x] Public domain under US (pre-1929) AND life+70
+- [x] Territories decided — Worldwide
+- [x] Sourcing the ORIGINAL work, not a modern reprint's apparatus
+- [ ] Proof saved in rights/ — screenshots still needed (see rights/rights.md)
 
 ## Gate 2 — Text clean
-- [ ] Cleanest source obtained into source/
-- [ ] Ran ocr_cleanup.py → text/clean.txt (+ diff + report)
-- [ ] Reviewed changes.diff before accepting
-- [ ] Worked through every flag in report.md
+- [x] Cleanest source obtained into source/
+- [x] Ran ocr_cleanup.py → text/clean.txt (+ diff + report)
+- [x] Reviewed changes.diff before accepting
+- [ ] Worked through every flag in report.md (403 flags pending review)
 - [ ] Proofed names/dates/numbers against page images
 - [ ] change-log noted
 
 ## Gate 3 — Apparatus written (this is the product)
-- [ ] Original introduction (your voice)
-- [ ] Glossary / annotations / chronology as warranted
-- [ ] "Note on the text" (source edition + editorial policy)
-- [ ] Differentiation is substantive
-- [ ] AI-disclosure status decided per element
+- [x] Original introduction (your voice)
+- [x] Glossary / annotations / chronology as warranted
+- [x] "Note on the text" (source edition + editorial policy)
+- [x] Differentiation is substantive
+- [x] AI-disclosure status decided per element
 
 ## Gate 4 — Designed
-- [ ] Interior in the standard template
-- [ ] Cover legible at thumbnail size
-- [ ] Print wrap sized to page count; ebook cover at spec
-- [ ] build/ has valid print PDF + EPUB
+- [x] Interior in the standard template
+- [x] Cover legible at thumbnail size
+- [x] Print wrap sized to page count; ebook cover at spec
+- [x] build/ has valid print PDF + EPUB
 
 ## Gate 5 — Listed & published
-- [ ] Title carries differentiator (e.g. [Annotated]); subtitle carries keywords
-- [ ] Description leads with WHY THIS EDITION; categories + keywords set
+- [x] Title carries differentiator (e.g. [Annotated]); subtitle carries keywords
+- [x] Description leads with WHY THIS EDITION; categories + keywords set
 - [ ] "Public domain work" selected; AI-generated content disclosed if any
 - [ ] Paperback + Kindle live; rights proof archived
 

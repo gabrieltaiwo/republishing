@@ -1,0 +1,62 @@
+\documentclass[12pt]{article}
+\usepackage[paperwidth=6in, paperheight=9in, margin=0.75in]{geometry}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{calc}
+
+% Define colors
+\definecolor{creampaper}{HTML}{F4F0EB} % Warm classic cream
+\definecolor{ink}{HTML}{1A1A1A} % Rich soft black
+
+% Fonts
+\setmainfont{Baskerville}
+\newfontfamily\authorfont[LetterSpace=25]{Helvetica} 
+
+\pagestyle{empty} % No page numbers
+
+\begin{document}
+\pagecolor{creampaper}
+\color{ink}
+
+% Background Watermark (Opon Ifa covering 75% of width, which is 4.5in)
+\begin{tikzpicture}[remember picture, overlay]
+    \node at (current page.center) {\includegraphics[width=4.5in]{opon_ifa_watermark.png}};
+\end{tikzpicture}
+
+% Delicate double-line border
+\begin{tikzpicture}[remember picture, overlay]
+    % Outer border
+    \draw[line width=1.2pt, ink] 
+        (current page.south west) ++(0.5in, 0.5in) 
+        rectangle 
+        ($(current page.north east) - (0.5in, 0.5in)$);
+        
+    % Inner border
+    \draw[line width=0.4pt, ink] 
+        (current page.south west) ++(0.56in, 0.56in) 
+        rectangle 
+        ($(current page.north east) - (0.56in, 0.56in)$);
+\end{tikzpicture}
+
+\vspace*{1.5in}
+
+\begin{center}
+    % Title
+    {\fontsize{40}{48}\selectfont \MakeUppercase{The History of the Yorubas}\par}
+    
+    \vspace{1.5in}
+    
+    % Minimalist divider
+    \rule{1.5in}{0.8pt}
+    
+    \vfill
+    
+    % Author
+    {\fontsize{14}{16}\authorfont \MakeUppercase{Samuel Johnson}\par}
+    
+    \vspace*{0.75in}
+\end{center}
+
+\end{document}

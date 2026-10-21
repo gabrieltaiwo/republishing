@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  --bg-paper: #f7f4ef;
+  --bg-card: #ffffff;
+  --ink-primary: #181615;
+  --ink-secondary: #57524e;
+  --accent-bronze: #8c5a2b;
+  --border-subtle: #e5dfd5;
+}
+
+body {
+  background-color: var(--bg-paper);
+  color: var(--ink-primary);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+}
+
+.font-serif-editorial {
+  font-family: "Baskerville", "Georgia", "Times New Roman", serif;
+}
+
+/* Subgrid card layout with explicit fallback per css-layout guidance */
+.catalog-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+
+.catalog-card {
+  grid-row: span 4;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: subgrid;
+}
+
+/* Native dialog styling & scroll containment per css-layout guidance */
+dialog.detail-modal {
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  padding: 0;
+  max-inline-size: 64rem;
+  inline-size: calc(100% - 2rem);
+  max-block-size: 90dvh;
+  background: var(--bg-card);
+  color: var(--ink-primary);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+dialog.detail-modal::backdrop {
+  background: rgba(24, 22, 21, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal-scroll-region {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  max-block-size: calc(90dvh - 9rem);
+}
+
+.line-clamp-prose {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  overflow: clip;
+}

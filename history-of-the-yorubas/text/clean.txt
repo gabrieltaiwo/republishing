@@ -1172,7 +1172,7 @@ A15
 
 . something ground
 
-\di
+Idi
 
 . . the seat
 

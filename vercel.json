@@ -1,0 +1,5 @@
+{
+  "buildCommand": "python3 tools/export_state.py && cd dashboard && npm install && npm run build",
+  "outputDirectory": "dashboard/out",
+  "framework": null
+}

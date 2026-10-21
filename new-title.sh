@@ -32,6 +32,14 @@ fi
 
 mkdir -p "$SLUG"/{rights,source,text,apparatus,design/cover,build,listing}
 
+# Copy templates if they exist
+if [ -d "_TEMPLATE/apparatus" ]; then
+  cp -a _TEMPLATE/apparatus/* "$SLUG/apparatus/" 2>/dev/null || true
+fi
+if [ -d "_TEMPLATE/listing" ]; then
+  cp -a _TEMPLATE/listing/* "$SLUG/listing/" 2>/dev/null || true
+fi
+
 # ---- README: the gate checklist (mirrors the runbook) --------------------- #
 cat > "$SLUG/README.md" <<EOF
 # $TITLE — production card

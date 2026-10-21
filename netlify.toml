@@ -1,0 +1,7 @@
+[build]
+  base = "dashboard"
+  command = "python3 ../tools/export_state.py && npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "20"
