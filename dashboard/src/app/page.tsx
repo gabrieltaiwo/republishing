@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import catalogData from "../data/catalog.json";
 import {
   BookOpen,
@@ -20,6 +20,14 @@ import {
   ChevronLeft,
   ChevronRight,
   FileCode2,
+  Volume2,
+  Play,
+  Pause,
+  Square,
+  SkipForward,
+  SkipBack,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 
 type CatalogType = typeof catalogData;
@@ -67,16 +75,80 @@ export default function DashboardPage() {
     "cream"
   );
   const [fontSize, setFontSize] = useState<number>(17);
+
+  // In-Book Text Search & Match Navigation State
   const [readerSearch, setReaderSearch] = useState<string>("");
+  const [activeMatchIdx, setActiveMatchIdx] = useState<number>(0);
+
+  // Audio Reader (Web Speech API) State
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [speakingParaIdx, setSpeakingParaIdx] = useState<number>(0);
+  const [speechRate, setSpeechRate] = useState<number>(1.0);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [selectedVoiceURI, setSelectedVoiceURI] = useState<string>("");
 
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const readerPaneRef = useRef<HTMLDivElement | null>(null);
+  const paraRefs = useRef<Record<number, HTMLParagraphElement | null>>({});
+  const matchRefs = useRef<Record<number, HTMLElement | null>>({});
+  const isPlayingRef = useRef<boolean>(false);
+  const speechRateRef = useRef<number>(1.0);
+  const selectedVoiceURIRef = useRef<string>("");
+
+  useEffect(() => {
+    speechRateRef.current = speechRate;
+  }, [speechRate]);
+
+  useEffect(() => {
+    selectedVoiceURIRef.current = selectedVoiceURI;
+  }, [selectedVoiceURI]);
+
+  // Load browser TTS voices
+  useEffect(() => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    const loadVoices = () => {
+      const available = window.speechSynthesis.getVoices();
+      const englishVoices = available.filter((v) =>
+        v.lang.toLowerCase().startsWith("en")
+      );
+      const list = englishVoices.length > 0 ? englishVoices : available;
+      setVoices(list);
+      if (list.length > 0 && !selectedVoiceURIRef.current) {
+        const preferred =
+          list.find(
+            (v) =>
+              v.name.includes("Daniel") ||
+              v.name.includes("Samantha") ||
+              v.name.includes("Natural")
+          ) || list[0];
+        setSelectedVoiceURI(preferred.voiceURI);
+      }
+    };
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    return () => {
+      window.speechSynthesis.cancel();
+    };
+  }, []);
+
+  const stopAudio = () => {
+    isPlayingRef.current = false;
+    setIsPlaying(false);
+    setIsPaused(false);
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+  };
 
   const openBookModal = (book: BookItem, defaultTab: ModalTab = "reader") => {
+    stopAudio();
     setSelectedBook(book);
     setActiveTab(defaultTab);
     setCurrentSectionIdx(0);
+    setSpeakingParaIdx(0);
     setReaderSearch("");
+    setActiveMatchIdx(0);
     if (dialogRef.current && !dialogRef.current.open) {
       dialogRef.current.showModal();
     }
@@ -95,6 +167,7 @@ export default function DashboardPage() {
         if (!cancelled) {
           setBookContent(data);
           setCurrentSectionIdx(0);
+          setSpeakingParaIdx(0);
           setLoadingBook(false);
         }
       })
@@ -106,14 +179,119 @@ export default function DashboardPage() {
     };
   }, [selectedBook]);
 
+  const activeSection =
+    bookContent && bookContent.sections[currentSectionIdx]
+      ? bookContent.sections[currentSectionIdx]
+      : null;
+
+  // Split current section into paragraphs for audio reading & search rendering
+  const paragraphs = useMemo(() => {
+    if (!activeSection) return [];
+    return activeSection.content
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+  }, [activeSection]);
+
+  // Speak a specific paragraph index and chain to the next one
+  const speakParagraph = (idx: number, parasList: string[]) => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+
+    if (idx < 0 || idx >= parasList.length) {
+      isPlayingRef.current = false;
+      setIsPlaying(false);
+      setIsPaused(false);
+      return;
+    }
+
+    isPlayingRef.current = true;
+    setIsPlaying(true);
+    setIsPaused(false);
+    setSpeakingParaIdx(idx);
+
+    const el = paraRefs.current[idx];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    const cleanText = parasList[idx].replace(/[#*_`]/g, "");
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = speechRateRef.current;
+
+    const avail = window.speechSynthesis.getVoices();
+    const chosen = avail.find((v) => v.voiceURI === selectedVoiceURIRef.current);
+    if (chosen) {
+      utterance.voice = chosen;
+    }
+
+    utterance.onend = () => {
+      if (!isPlayingRef.current) return;
+      if (idx + 1 < parasList.length) {
+        speakParagraph(idx + 1, parasList);
+      } else {
+        isPlayingRef.current = false;
+        setIsPlaying(false);
+        setIsPaused(false);
+      }
+    };
+
+    utterance.onerror = () => {
+      isPlayingRef.current = false;
+      setIsPlaying(false);
+      setIsPaused(false);
+    };
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const togglePlayPause = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    if (isPlaying && !isPaused) {
+      window.speechSynthesis.pause();
+      setIsPaused(true);
+    } else if (isPlaying && isPaused) {
+      window.speechSynthesis.resume();
+      setIsPaused(false);
+    } else {
+      speakParagraph(speakingParaIdx, paragraphs);
+    }
+  };
+
+  const skipParagraph = (delta: number) => {
+    const nextIdx = Math.max(
+      0,
+      Math.min(paragraphs.length - 1, speakingParaIdx + delta)
+    );
+    setSpeakingParaIdx(nextIdx);
+    if (isPlaying) {
+      speakParagraph(nextIdx, paragraphs);
+    } else {
+      const el = paraRefs.current[nextIdx];
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
+  const handleSpeedChange = (newRate: number) => {
+    setSpeechRate(newRate);
+    speechRateRef.current = newRate;
+    if (isPlaying) {
+      speakParagraph(speakingParaIdx, paragraphs);
+    }
+  };
+
   const selectReaderSection = (idx: number) => {
+    stopAudio();
     setCurrentSectionIdx(idx);
+    setSpeakingParaIdx(0);
+    setActiveMatchIdx(0);
     if (readerPaneRef.current) {
       readerPaneRef.current.scrollTop = 0;
     }
   };
 
   const closeBookModal = () => {
+    stopAudio();
     if (dialogRef.current && dialogRef.current.open) {
       dialogRef.current.close();
     }
@@ -131,21 +309,95 @@ export default function DashboardPage() {
     return t.proof_level === filterProof;
   });
 
-  const activeSection =
-    bookContent && bookContent.sections[currentSectionIdx]
-      ? bookContent.sections[currentSectionIdx]
-      : null;
+  // Calculate book-wide search matches per section
+  const searchQuery = readerSearch.trim();
+  const sectionSearchResults = useMemo(() => {
+    if (!bookContent || searchQuery.length < 2) return null;
+    const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(escaped, "gi");
 
-  const matchingSections =
-    bookContent && readerSearch.trim().length > 1
-      ? bookContent.sections
-          .map((sec, idx) => ({ sec, idx }))
-          .filter(
-            ({ sec }) =>
-              sec.title.toLowerCase().includes(readerSearch.toLowerCase()) ||
-              sec.content.toLowerCase().includes(readerSearch.toLowerCase())
-          )
-      : null;
+    return bookContent.sections
+      .map((sec, idx) => {
+        const matches = sec.content.match(regex);
+        const count = matches ? matches.length : 0;
+        const titleMatch = sec.title
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+        return { sec, idx, count, titleMatch };
+      })
+      .filter((item) => item.count > 0 || item.titleMatch);
+  }, [bookContent, searchQuery]);
+
+  // Count matches in the currently open section
+  const currentSectionMatchCount = useMemo(() => {
+    if (!activeSection || searchQuery.length < 2) return 0;
+    const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(escaped, "gi");
+    let total = 0;
+    for (const p of paragraphs) {
+      const m = p.match(regex);
+      if (m) total += m.length;
+    }
+    return total;
+  }, [activeSection, paragraphs, searchQuery]);
+
+  const totalBookMatches = useMemo(() => {
+    if (!sectionSearchResults) return 0;
+    return sectionSearchResults.reduce((acc, r) => acc + r.count, 0);
+  }, [sectionSearchResults]);
+
+  // Scroll to active match when activeMatchIdx changes
+  useEffect(() => {
+    if (currentSectionMatchCount === 0) return;
+    const el = matchRefs.current[activeMatchIdx];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [activeMatchIdx, currentSectionMatchCount, currentSectionIdx]);
+
+  const jumpMatch = (delta: number) => {
+    if (currentSectionMatchCount === 0) return;
+    setActiveMatchIdx(
+      (prev) =>
+        (prev + delta + currentSectionMatchCount) % currentSectionMatchCount
+    );
+  };
+
+  // Helper to render paragraph text with highlighted search matches
+  const renderHighlightedParagraph = (
+    text: string,
+    startingMatchCounter: { current: number }
+  ) => {
+    if (searchQuery.length < 2) return text;
+    const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const parts = text.split(new RegExp(`(${escaped})`, "gi"));
+    return parts.map((part, i) => {
+      if (part.toLowerCase() === searchQuery.toLowerCase()) {
+        const matchIndex = startingMatchCounter.current++;
+        const isCurrent = matchIndex === activeMatchIdx;
+        return (
+          <mark
+            key={i}
+            ref={(el) => {
+              matchRefs.current[matchIndex] = el;
+            }}
+            className={`rounded px-0.5 transition-all ${
+              isCurrent
+                ? "bg-amber-500 text-stone-950 font-bold ring-2 ring-amber-700"
+                : "bg-yellow-200/90 text-stone-900"
+            }`}
+          >
+            {part}
+          </mark>
+        );
+      }
+      return part;
+    });
+  };
+
+  // Counter used during render to assign sequential indices to <mark> tags
+  const renderMatchCounter = { current: 0 };
+  matchRefs.current = {};
 
   return (
     <div className="min-h-dvh flex flex-col">
@@ -166,7 +418,7 @@ export default function DashboardPage() {
             </div>
             <p className="text-sm text-stone-600 mt-1">
               Foundational West African &amp; Historical Editions · 6-Gate
-              Production Pipeline &amp; Built-In Book Reader
+              Pipeline, E-Reader &amp; Audio Narrator
             </p>
           </div>
 
@@ -416,7 +668,7 @@ export default function DashboardPage() {
                             className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-900 text-white hover:bg-amber-800 transition cursor-pointer"
                           >
                             <BookOpen className="w-3.5 h-3.5" />
-                            Read Book
+                            Read / Listen
                           </button>
                           <button
                             onClick={() => openBookModal(book, "gates")}
@@ -442,8 +694,8 @@ export default function DashboardPage() {
               Edition Production Cards ({filteredTitles.length})
             </h2>
             <span className="text-xs text-stone-500">
-              Click &ldquo;Read &amp; Preview&rdquo; on any card to read the
-              finished book right inside the dashboard
+              Click &ldquo;Read &amp; Listen&rdquo; on any card to open the
+              E-Reader, Audio Narrator, or Print PDF preview
             </span>
           </div>
 
@@ -474,7 +726,7 @@ export default function DashboardPage() {
                         onClick={() => openBookModal(book, "reader")}
                         className="w-20 shrink-0 rounded-md border border-stone-200 overflow-clip shadow-xs hover:opacity-90 transition cursor-pointer"
                         style={{ aspectRatio: "2 / 3" }}
-                        title="Click to read book"
+                        title="Click to read or listen to this book"
                       >
                         <img
                           src={book.build.cover_url}
@@ -604,8 +856,8 @@ export default function DashboardPage() {
                       onClick={() => openBookModal(book, "reader")}
                       className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md bg-amber-900 text-white hover:bg-amber-800 transition cursor-pointer ml-auto"
                     >
-                      <BookOpen className="w-3.5 h-3.5" />
-                      Read &amp; Preview
+                      <Volume2 className="w-3.5 h-3.5" />
+                      Read &amp; Listen
                     </button>
                   </div>
                 </article>
@@ -615,11 +867,14 @@ export default function DashboardPage() {
         </section>
       </main>
 
-      {/* Native HTML <dialog> Modal for Book Reading & Deep Inspection */}
+      {/* Native HTML <dialog> Modal for Book Reading, Audio Narration & Deep Inspection */}
       <dialog
         ref={dialogRef}
         className="detail-modal m-auto"
-        onClose={() => setSelectedBook(null)}
+        onClose={() => {
+          stopAudio();
+          setSelectedBook(null);
+        }}
       >
         {selectedBook && (
           <div className="flex flex-col">
@@ -659,7 +914,7 @@ export default function DashboardPage() {
               {[
                 {
                   id: "reader",
-                  label: "📖 Read & Preview Book",
+                  label: "📖 Read & Audio Narrator",
                   icon: BookOpen,
                 },
                 {
@@ -693,7 +948,10 @@ export default function DashboardPage() {
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id as ModalTab)}
+                    onClick={() => {
+                      if (tab.id !== "reader") stopAudio();
+                      setActiveTab(tab.id as ModalTab);
+                    }}
                     className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
                       active
                         ? "border-amber-900 text-amber-950 bg-white"
@@ -709,10 +967,10 @@ export default function DashboardPage() {
 
             {/* Modal Scrollable Content Region */}
             <div className="modal-scroll-region p-6 space-y-6">
-              {/* TAB 0: INTERACTIVE BOOK READER & PDF VIEWER */}
+              {/* TAB 0: INTERACTIVE BOOK READER, TEXT SEARCH & AUDIO NARRATOR */}
               {activeTab === "reader" && (
-                <div className="space-y-4">
-                  {/* Reader Mode & Controls Bar */}
+                <div className="space-y-3">
+                  {/* Row 1: Mode Switcher + Full-Text Search Bar + Typography */}
                   <div className="flex flex-wrap items-center justify-between gap-3 bg-stone-100 p-3 rounded-lg border border-stone-200">
                     <div className="flex items-center gap-1.5">
                       <button
@@ -723,10 +981,13 @@ export default function DashboardPage() {
                             : "bg-white text-stone-700 border border-stone-300"
                         }`}
                       >
-                        Interactive E-Reader (Chapters + Search)
+                        E-Reader &amp; Audio
                       </button>
                       <button
-                        onClick={() => setReaderMode("pdf")}
+                        onClick={() => {
+                          stopAudio();
+                          setReaderMode("pdf");
+                        }}
                         className={`px-3 py-1.5 rounded-md text-xs font-semibold transition cursor-pointer ${
                           readerMode === "pdf"
                             ? "bg-stone-900 text-white"
@@ -739,15 +1000,54 @@ export default function DashboardPage() {
 
                     {readerMode === "ereader" && (
                       <div className="flex flex-wrap items-center gap-2">
-                        {/* Search inside book */}
-                        <div className="relative">
+                        {/* In-Book Full-Text Search + Match Navigator */}
+                        <div className="flex items-center bg-white rounded-md border border-stone-300 overflow-clip">
+                          <Search className="w-3.5 h-3.5 text-stone-400 ml-2.5 shrink-0" />
                           <input
                             type="text"
                             value={readerSearch}
-                            onChange={(e) => setReaderSearch(e.target.value)}
-                            placeholder="Search inside book..."
-                            className="text-xs px-2.5 py-1.5 rounded-md border border-stone-300 bg-white text-stone-900 w-44 focus:outline-none focus:border-amber-800"
+                            onChange={(e) => {
+                              setReaderSearch(e.target.value);
+                              setActiveMatchIdx(0);
+                            }}
+                            placeholder="Search text in book..."
+                            className="text-xs px-2 py-1.5 bg-transparent text-stone-900 w-44 focus:outline-none"
                           />
+                          {searchQuery.length >= 2 && (
+                            <div className="flex items-center gap-1 pr-1.5 border-l border-stone-200 pl-2 bg-stone-50 text-[11px] font-mono text-stone-600">
+                              <span>
+                                {currentSectionMatchCount > 0
+                                  ? `${activeMatchIdx + 1}/${currentSectionMatchCount}`
+                                  : `0 (${totalBookMatches} in book)`}
+                              </span>
+                              <button
+                                onClick={() => jumpMatch(-1)}
+                                disabled={currentSectionMatchCount === 0}
+                                className="p-0.5 hover:bg-stone-200 rounded disabled:opacity-30 cursor-pointer"
+                                title="Previous match in chapter"
+                              >
+                                <ArrowUp className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={() => jumpMatch(1)}
+                                disabled={currentSectionMatchCount === 0}
+                                className="p-0.5 hover:bg-stone-200 rounded disabled:opacity-30 cursor-pointer"
+                                title="Next match in chapter"
+                              >
+                                <ArrowDown className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setReaderSearch("");
+                                  setActiveMatchIdx(0);
+                                }}
+                                className="p-0.5 hover:bg-stone-200 rounded text-stone-500 cursor-pointer"
+                                title="Clear search"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+                          )}
                         </div>
 
                         {/* Font Size Controls */}
@@ -803,6 +1103,120 @@ export default function DashboardPage() {
                     )}
                   </div>
 
+                  {/* Row 2: Audio Reader Bar (TTS Narrator) */}
+                  {readerMode === "ereader" && (
+                    <div className="flex flex-wrap items-center justify-between gap-3 bg-amber-950 text-amber-50 px-4 py-2.5 rounded-lg shadow-xs">
+                      <div className="flex items-center gap-2">
+                        <Volume2 className="w-4 h-4 text-amber-300 shrink-0" />
+                        <span className="text-xs font-semibold tracking-wide uppercase text-amber-200">
+                          Audio Reader
+                        </span>
+
+                        <div className="flex items-center gap-1 ml-2">
+                          <button
+                            onClick={() => skipParagraph(-1)}
+                            disabled={speakingParaIdx <= 0}
+                            className="p-1.5 rounded hover:bg-amber-900/80 disabled:opacity-30 cursor-pointer"
+                            title="Previous paragraph"
+                          >
+                            <SkipBack className="w-3.5 h-3.5" />
+                          </button>
+
+                          <button
+                            onClick={togglePlayPause}
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-amber-400 text-stone-950 font-bold text-xs hover:bg-amber-300 transition cursor-pointer"
+                          >
+                            {isPlaying && !isPaused ? (
+                              <>
+                                <Pause className="w-3.5 h-3.5" />
+                                Pause
+                              </>
+                            ) : (
+                              <>
+                                <Play className="w-3.5 h-3.5" />
+                                {isPlaying && isPaused
+                                  ? "Resume"
+                                  : "Listen to Chapter"}
+                              </>
+                            )}
+                          </button>
+
+                          {isPlaying && (
+                            <button
+                              onClick={stopAudio}
+                              className="p-1.5 rounded bg-amber-900/80 hover:bg-rose-800 text-amber-100 transition cursor-pointer"
+                              title="Stop narration"
+                            >
+                              <Square className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+
+                          <button
+                            onClick={() => skipParagraph(1)}
+                            disabled={speakingParaIdx >= paragraphs.length - 1}
+                            className="p-1.5 rounded hover:bg-amber-900/80 disabled:opacity-30 cursor-pointer"
+                            title="Next paragraph"
+                          >
+                            <SkipForward className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <span className="text-[11px] font-mono text-amber-200/80 ml-2 hidden sm:inline">
+                          Paragraph {speakingParaIdx + 1} of {paragraphs.length}{" "}
+                          (click any paragraph to play from there)
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        {/* Speed selector */}
+                        <div className="flex items-center gap-1 bg-amber-900/70 rounded px-2 py-1">
+                          <span className="text-[11px] text-amber-200">
+                            Speed:
+                          </span>
+                          {[0.85, 1.0, 1.25, 1.5, 2.0].map((rate) => (
+                            <button
+                              key={rate}
+                              onClick={() => handleSpeedChange(rate)}
+                              className={`px-1.5 py-0.5 rounded text-[11px] font-mono cursor-pointer ${
+                                speechRate === rate
+                                  ? "bg-amber-300 text-stone-950 font-bold"
+                                  : "text-amber-100 hover:bg-amber-800"
+                              }`}
+                            >
+                              {rate}x
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Voice selector */}
+                        {voices.length > 0 && (
+                          <select
+                            value={selectedVoiceURI}
+                            onChange={(e) => {
+                              setSelectedVoiceURI(e.target.value);
+                              selectedVoiceURIRef.current = e.target.value;
+                              if (isPlaying) {
+                                speakParagraph(speakingParaIdx, paragraphs);
+                              }
+                            }}
+                            className="bg-amber-900/70 text-amber-100 border border-amber-800 rounded px-2 py-1 text-xs max-w-44 truncate focus:outline-none"
+                            aria-label="Select narrator voice"
+                          >
+                            {voices.map((v) => (
+                              <option
+                                key={v.voiceURI}
+                                value={v.voiceURI}
+                                className="text-stone-900 bg-white"
+                              >
+                                {v.name} ({v.lang})
+                              </option>
+                            ))}
+                          </select>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Mode A: Embedded Print PDF Viewer */}
                   {readerMode === "pdf" && selectedBook.build.pdf_url && (
                     <div className="rounded-xl border border-stone-300 overflow-clip bg-stone-900">
@@ -821,7 +1235,9 @@ export default function DashboardPage() {
                       <aside className="lg:col-span-4 rounded-xl border border-stone-200 bg-stone-50 overflow-clip">
                         <div className="px-3.5 py-2.5 bg-stone-100 border-b border-stone-200 flex items-center justify-between">
                           <span className="text-xs font-bold uppercase tracking-wider text-stone-600">
-                            Table of Contents
+                            {sectionSearchResults
+                              ? `Search Results (${totalBookMatches} hits)`
+                              : "Table of Contents"}
                           </span>
                           {bookContent && (
                             <span className="text-[11px] font-mono text-stone-500">
@@ -830,42 +1246,48 @@ export default function DashboardPage() {
                           )}
                         </div>
 
-                        <div className="max-h-[56dvh] overflow-y-auto divide-y divide-stone-200/60">
+                        <div className="max-h-[54dvh] overflow-y-auto divide-y divide-stone-200/60">
                           {loadingBook && (
                             <div className="p-4 text-xs text-stone-500">
                               Loading book text...
                             </div>
                           )}
 
-                          {matchingSections ? (
-                            matchingSections.length === 0 ? (
+                          {sectionSearchResults ? (
+                            sectionSearchResults.length === 0 ? (
                               <div className="p-4 text-xs text-stone-500">
-                                No chapters match &ldquo;{readerSearch}&rdquo;
+                                No matches found for &ldquo;{readerSearch}
+                                &rdquo; in this book.
                               </div>
                             ) : (
-                              matchingSections.map(({ sec, idx }) => (
-                                <button
-                                  key={sec.id}
-                                  onClick={() => selectReaderSection(idx)}
-                                  className={`w-full text-left px-3.5 py-2.5 text-xs transition cursor-pointer ${
-                                    currentSectionIdx === idx
-                                      ? "bg-amber-900 text-white font-semibold"
-                                      : "hover:bg-stone-200/60 text-stone-800"
-                                  }`}
-                                >
-                                  <div className="truncate">{sec.title}</div>
-                                  <div
-                                    className={`text-[10px] mt-0.5 ${
+                              sectionSearchResults.map(
+                                ({ sec, idx, count }) => (
+                                  <button
+                                    key={sec.id}
+                                    onClick={() => selectReaderSection(idx)}
+                                    className={`w-full text-left px-3.5 py-2.5 text-xs transition cursor-pointer ${
                                       currentSectionIdx === idx
-                                        ? "text-amber-100"
-                                        : "text-stone-400"
+                                        ? "bg-amber-900 text-white font-semibold"
+                                        : "hover:bg-stone-200/60 text-stone-800"
                                     }`}
                                   >
-                                    {sec.word_count.toLocaleString("en-US")}{" "}
-                                    words
-                                  </div>
-                                </button>
-                              ))
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className="truncate">
+                                        {sec.title}
+                                      </span>
+                                      <span
+                                        className={`shrink-0 text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                                          currentSectionIdx === idx
+                                            ? "bg-amber-400 text-stone-950 font-bold"
+                                            : "bg-amber-100 text-amber-900"
+                                        }`}
+                                      >
+                                        {count} {count === 1 ? "hit" : "hits"}
+                                      </span>
+                                    </div>
+                                  </button>
+                                )
+                              )
                             )
                           ) : (
                             bookContent?.sections.map((sec, idx) => (
@@ -897,7 +1319,7 @@ export default function DashboardPage() {
                       {/* Right Book Page Canvas */}
                       <div
                         ref={readerPaneRef}
-                        className={`lg:col-span-8 rounded-xl border p-6 sm:p-10 max-h-[60dvh] overflow-y-auto shadow-inner transition-colors ${
+                        className={`lg:col-span-8 rounded-xl border p-6 sm:p-10 max-h-[56dvh] overflow-y-auto shadow-inner transition-colors ${
                           readerTheme === "cream"
                             ? "bg-[#f8f4ec] text-[#1f1c18] border-[#e2d9c8]"
                             : readerTheme === "white"
@@ -920,10 +1342,40 @@ export default function DashboardPage() {
                             </h3>
 
                             <div
-                              className="font-serif-editorial whitespace-pre-wrap leading-relaxed space-y-4"
+                              className="font-serif-editorial leading-relaxed space-y-4"
                               style={{ fontSize: `${fontSize}px` }}
                             >
-                              {activeSection.content}
+                              {paragraphs.map((para, pIdx) => {
+                                const isBeingSpoken =
+                                  isPlaying && speakingParaIdx === pIdx;
+                                return (
+                                  <p
+                                    key={pIdx}
+                                    ref={(el) => {
+                                      paraRefs.current[pIdx] = el;
+                                    }}
+                                    onClick={() => {
+                                      setSpeakingParaIdx(pIdx);
+                                      if (isPlaying) {
+                                        speakParagraph(pIdx, paragraphs);
+                                      }
+                                    }}
+                                    title="Click to set audio narrator to this paragraph"
+                                    className={`whitespace-pre-wrap rounded-md transition-colors cursor-pointer ${
+                                      isBeingSpoken
+                                        ? readerTheme === "dark"
+                                          ? "bg-amber-950/80 ring-2 ring-amber-500/60 px-3 py-2 -mx-3"
+                                          : "bg-amber-200/50 ring-2 ring-amber-700/40 px-3 py-2 -mx-3"
+                                        : "hover:opacity-95"
+                                    }`}
+                                  >
+                                    {renderHighlightedParagraph(
+                                      para,
+                                      renderMatchCounter
+                                    )}
+                                  </p>
+                                );
+                              })}
                             </div>
 
                             {/* Bottom Chapter Pagination */}
