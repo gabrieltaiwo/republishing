@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "python3 ../tools/export_state.py",
+    "predev": "[ -f ../tools/export_state.py ] && python3 ../tools/export_state.py || true",
     "dev": "next dev",
-    "prebuild": "python3 ../tools/export_state.py",
+    "prebuild": "[ -f ../tools/export_state.py ] && python3 ../tools/export_state.py || true",
     "build": "next build",
     "start": "next start"
   },
